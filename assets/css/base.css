@@ -1,0 +1,201 @@
+/*  Base resets + global element styles.
+ *  Loaded after tokens.css and typography.css.
+ */
+
+@import 'tailwindcss';
+
+/* Tailwind v4 theme bridge — exposes our tokens to Tailwind utilities */
+@theme {
+  --color-bg-primary:    var(--bg-primary);
+  --color-bg-secondary:  var(--bg-secondary);
+  --color-bg-tinted:     var(--bg-tinted);
+  --color-bg-footer:     var(--bg-footer);
+
+  --color-ink-primary:   var(--ink-primary);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-ink-muted:     var(--ink-muted);
+
+  --color-brand:         var(--brand);
+  --color-brand-hover:   var(--brand-hover);
+  --color-brand-soft:    var(--brand-soft);
+
+  --color-rule:          var(--rule);
+
+  --font-sans:           var(--font-sans);
+  --font-mono:           var(--font-mono);
+
+  --spacing-1:  var(--space-1);
+  --spacing-2:  var(--space-2);
+  --spacing-3:  var(--space-3);
+  --spacing-4:  var(--space-4);
+  --spacing-6:  var(--space-6);
+  --spacing-8:  var(--space-8);
+  --spacing-12: var(--space-12);
+  --spacing-16: var(--space-16);
+  --spacing-24: var(--space-24);
+  --spacing-32: var(--space-32);
+  --spacing-48: var(--space-48);
+}
+
+/* ----------------------------------------------------------------
+ *  Reset
+ * ---------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Horizontal-overflow guard. A single over-wide element (e.g. a decorative
+   glow) otherwise widens the layout viewport on mobile, which shifts every
+   section off-center and leaves dead space on the right. `clip` (not
+   `hidden`/`auto`) does NOT create a scroll container, so the hero's
+   position: sticky pin and GSAP scroll-triggers keep working. */
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-primary);
+  color: var(--ink-primary);
+  font-family: var(--font-sans);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  letter-spacing: var(--type-body-track);
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 0;
+}
+
+/* ----------------------------------------------------------------
+ *  Selection
+ * ---------------------------------------------------------------- */
+::selection {
+  background: var(--brand-soft);
+  color: var(--ink-primary);
+}
+
+/* ----------------------------------------------------------------
+ *  Focus — single brand-color focus ring everywhere
+ * ---------------------------------------------------------------- */
+:where(a, button, [role="button"], input, textarea, select, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 3px var(--brand-ring);
+  border-radius: var(--radius-sm);
+}
+
+/* Skip-to-content link — visible only on focus */
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--ink-primary);
+  color: var(--bg-primary);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: var(--type-caption-size);
+  text-transform: uppercase;
+  letter-spacing: var(--type-caption-track);
+  transform: translateY(-200%);
+  transition: transform 200ms var(--ease-out-expo);
+  z-index: var(--z-toast);
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* ----------------------------------------------------------------
+ *  Container — single source of truth for content max-width
+ * ---------------------------------------------------------------- */
+.container-shell {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad-x);
+}
+
+/* ----------------------------------------------------------------
+ *  Section vertical rhythm — applied via <SectionShell />
+ *  Default gives generous breathing room. Sections override per-id
+ *  to break the uniform cadence — gallery and FAQ sit tighter so
+ *  About lands as the long inhale before the close.
+ * ---------------------------------------------------------------- */
+.section-shell {
+  padding-block: var(--section-pad-y-mobile);
+}
+@media (min-width: 1024px) {
+  .section-shell {
+    padding-block: var(--section-pad-y-desktop);
+  }
+}
+
+/* Gallery sits tighter — clay surface change is the punctuation, the
+   padding doesn't need to also shout. */
+.section-shell#gallery {
+  padding-block: var(--space-24);
+}
+@media (min-width: 1024px) {
+  .section-shell#gallery {
+    padding-block: var(--space-32);
+  }
+}
+
+/* About is the long breath — extra top padding before founder. */
+@media (min-width: 1024px) {
+  .section-shell#about {
+    padding-top: calc(var(--section-pad-y-desktop) + var(--space-16));
+  }
+}
+
+/* FAQ closes tighter so the footer doesn't feel marooned. */
+.section-shell#faq {
+  padding-block: var(--space-24) var(--space-16);
+}
+@media (min-width: 1024px) {
+  .section-shell#faq {
+    padding-block: var(--space-32) var(--space-24);
+  }
+}
+
+/* ----------------------------------------------------------------
+ *  Touch-only hover gating helper
+ * ---------------------------------------------------------------- */
+@media (hover: none) {
+  .hover-only {
+    display: none !important;
+  }
+}

@@ -1,0 +1,121 @@
+/*  Self-hosted Geist Sans + Geist Mono.
+ *  Files copied to /public/fonts/ via scripts/setup-fonts.mjs (postinstall).
+ */
+
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/geist-sans-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/geist-sans-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/geist-sans-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/geist-mono-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ----------------------------------------------------------------
+ *  Type utility classes — composable in components, never inline.
+ * ---------------------------------------------------------------- */
+.type-display-xl {
+  font-family: var(--font-sans);
+  font-size: var(--type-display-xl-size);
+  line-height: var(--type-display-xl-line);
+  letter-spacing: var(--type-display-xl-track);
+  font-weight: var(--type-display-xl-weight);
+  color: var(--ink-primary);
+  text-wrap: balance;
+}
+.type-stat {
+  font-family: var(--font-sans);
+  font-size: var(--type-stat-size);
+  line-height: var(--type-stat-line);
+  letter-spacing: var(--type-stat-track);
+  font-weight: var(--type-stat-weight);
+  color: var(--ink-primary);
+  font-feature-settings: 'tnum' 1, 'ss01' 1;
+}
+.type-display-lg {
+  font-family: var(--font-sans);
+  font-size: var(--type-display-lg-size);
+  line-height: var(--type-display-lg-line);
+  letter-spacing: var(--type-display-lg-track);
+  font-weight: var(--type-display-lg-weight);
+  color: var(--ink-primary);
+}
+.type-display-md {
+  font-family: var(--font-sans);
+  font-size: var(--type-display-md-size);
+  line-height: var(--type-display-md-line);
+  letter-spacing: var(--type-display-md-track);
+  font-weight: var(--type-display-md-weight);
+  color: var(--ink-primary);
+}
+.type-display-sm {
+  font-family: var(--font-sans);
+  font-size: var(--type-display-sm-size);
+  line-height: var(--type-display-sm-line);
+  letter-spacing: var(--type-display-sm-track);
+  font-weight: var(--type-display-sm-weight);
+  color: var(--ink-primary);
+}
+.type-body-lg {
+  font-family: var(--font-sans);
+  font-size: var(--type-body-lg-size);
+  line-height: var(--type-body-lg-line);
+  letter-spacing: var(--type-body-lg-track);
+  font-weight: var(--type-body-lg-weight);
+  color: var(--ink-secondary);
+}
+.type-body {
+  font-family: var(--font-sans);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  letter-spacing: var(--type-body-track);
+  font-weight: var(--type-body-weight);
+  color: var(--ink-secondary);
+}
+.type-caption {
+  font-family: var(--font-mono);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  letter-spacing: var(--type-caption-track);
+  font-weight: var(--type-caption-weight);
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+
+/* Tabular figures for stat values — prevents layout shift */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ----------------------------------------------------------------
+ *  Editorial italic — the one register break in the system.
+ *  Used in: founder pull-quote, gallery headline, intro thesis.
+ *  Synthesized italic on Geist; weight drops to 500 to feel
+ *  cut rather than slanted-bold.
+ * ---------------------------------------------------------------- */
+.type-italic {
+  font-family: var(--font-sans);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+}

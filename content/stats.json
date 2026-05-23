@@ -1,0 +1,44 @@
+[
+  {
+    "value": "20 min",
+    "label": "Average time U.S. adults spend with friends in person each day — down from about an hour two decades ago.",
+    "source": "Bureau of Labor Statistics, American Time Use Survey",
+    "year": "2023",
+    "url": "https://www.bls.gov/tus/"
+  },
+  {
+    "value": "25%",
+    "label": "U.S. adults who get no physical activity outside of work in a typical month — no sport, no walks, no exercise.",
+    "source": "CDC, Behavioral Risk Factor Surveillance System",
+    "year": "2022",
+    "url": "https://www.cdc.gov/physicalactivity/data/inactivity-prevalence-maps/index.html"
+  },
+  {
+    "value": "1 in 2",
+    "label": "U.S. adults who reported measurable loneliness even before the pandemic.",
+    "source": "U.S. Surgeon General, Our Epidemic of Loneliness and Isolation",
+    "year": "2023",
+    "url": "https://www.hhs.gov/sites/default/files/surgeon-general-social-connection-advisory.pdf"
+  },
+  {
+  "value": "8%",
+  "label": "U.S. adults who report having no close friends at all — a share that has quietly grown over the past decade.",
+  "source": "Pew Research Center, What Does Friendship Look Like in America",
+  "year": "2023",
+  "url": "https://www.pewresearch.org/short-reads/2023/10/12/what-does-friendship-look-like-in-america/"
+},
+{
+  "value": "30%",
+  "label": "Share of Americans who socialize in person on any given day — down from 38% a decade ago.",
+  "source": "Bureau of Labor Statistics, American Time Use Survey",
+  "year": "2024",
+  "url": "https://www.bls.gov/news.release/atus.nr0.htm"
+},
+{
+  "value": "26 min",
+  "label": "Less time per day that 15-25 year olds spend socializing in person compared to the same age group in 2003 — the steepest drop of any age group.",
+  "source": "Bureau of Labor Statistics, American Time Use Survey",
+  "year": "2024",
+  "url": "https://www.bls.gov/news.release/atus.nr0.htm"
+}
+]

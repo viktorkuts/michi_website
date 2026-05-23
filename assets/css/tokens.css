@@ -1,0 +1,148 @@
+/*  Synq design tokens — locked per DESIGN_BRIEF.md
+ *  Edit only via brief revision; never hardcode in components.
+ */
+
+:root {
+  /* ============================================================ */
+  /*  COLOR                                                       */
+  /* ============================================================ */
+  --bg-primary:    #F7F4EE;   /* deep ivory base                  */
+  --bg-secondary:  #FAF8F3;   /* lighter ivory for elevated cards */
+  --bg-tinted:     #ECE6D8;   /* warm muted tint                  */
+  --bg-clay:       #1B1410;   /* deep warm clay — gallery surface */
+  --bg-footer:     #14121A;   /* deep ink                         */
+
+  --ink-primary:   #14121A;   /* body / display ink               */
+  --ink-secondary: #4F4B65;   /* secondary text — 8.1:1 on ivory  */
+  --ink-muted:     #6E6982;   /* tertiary/caption — 4.8:1 on ivory*/
+  --ink-on-clay:   #F7F1E6;   /* ivory text on clay surface       */
+  --ink-muted-on-clay: rgb(247 241 230 / 0.55);
+
+  /* Persimmon — marketing accent. The product purple stays inside  */
+  /* the app; here the brand reads warm and present.                */
+  --brand:         #C0411C;
+  --brand-hover:   #A23615;
+  --brand-soft:    #FBE7DF;
+  --brand-ring:    rgb(192 65 28 / 0.30);
+  --brand-ink:     #5C1F0C;   /* deep persimmon, for text on soft */
+
+  --rule:          #E8E2D5;   /* hairline borders                 */
+  --rule-on-clay:  rgb(247 241 230 / 0.12);
+
+  /* ============================================================ */
+  /*  TYPE — clamps + line / tracking / weight                    */
+  /* ============================================================ */
+  /* Hero headline pushes harder than the rest. clamps from 56px */
+  /* mobile to 112px on a 1440 viewport, 128px hard cap.         */
+  --type-display-xl-size:    clamp(3.5rem, 1.5rem + 6.25vw, 8rem);
+  --type-display-xl-line:    0.95;
+  --type-display-xl-track:   -0.035em;
+  --type-display-xl-weight:  600;
+
+  --type-display-lg-size:    clamp(2.5rem, 1.5rem + 3.125vw, 4.5rem);
+  --type-display-lg-line:    1.05;
+  --type-display-lg-track:   -0.02em;
+  --type-display-lg-weight:  600;
+
+  /* Monumental — used only for the three Intro stat values.    */
+  /* Caps high on purpose so the numbers carry the page.        */
+  --type-stat-size:          clamp(4.5rem, 3rem + 9vw, 13rem);
+  --type-stat-line:          0.92;
+  --type-stat-track:         -0.045em;
+  --type-stat-weight:        600;
+
+  --type-display-md-size:    clamp(2rem, 1.25rem + 2.5vw, 3.5rem);
+  --type-display-md-line:    1.10;
+  --type-display-md-track:   -0.015em;
+  --type-display-md-weight:  600;
+
+  --type-display-sm-size:    clamp(1.5rem, 1.125rem + 0.875vw, 2.25rem);
+  --type-display-sm-line:    1.20;
+  --type-display-sm-track:   -0.01em;
+  --type-display-sm-weight:  600;
+
+  --type-body-lg-size:       clamp(1.0625rem, 0.95rem + 0.4375vw, 1.25rem);
+  --type-body-lg-line:       1.50;
+  --type-body-lg-track:      -0.005em;
+  --type-body-lg-weight:     400;
+
+  --type-body-size:          1rem;
+  --type-body-line:          1.55;
+  --type-body-track:         -0.005em;
+  --type-body-weight:        400;
+
+  --type-caption-size:       0.8125rem;   /* 13px */
+  --type-caption-line:       1.40;
+  --type-caption-track:      0.06em;
+  --type-caption-weight:     500;
+
+  /* ============================================================ */
+  /*  SPACE — 4px base, locked tokens                             */
+  /* ============================================================ */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --space-48: 12rem;
+
+  /* Section vertical padding — applied via SectionShell */
+  --section-pad-y-mobile:  var(--space-32);
+  --section-pad-y-desktop: var(--space-48);
+
+  --container-max:    78rem;     /* 1248px */
+  --container-pad-x:  var(--space-6);
+
+  /* ============================================================ */
+  /*  MOTION                                                      */
+  /* ============================================================ */
+  --ease-out-expo:  cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-3:  cubic-bezier(0.65, 0, 0.35, 1);
+
+  --dur-micro:    200ms;
+  --dur-standard: 400ms;
+  --dur-section:  600ms;
+  --stagger:      60ms;
+
+  /* ============================================================ */
+  /*  RADIUS                                                      */
+  /* ============================================================ */
+  --radius-sm:  0.375rem;   /*  6px */
+  --radius-md:  0.625rem;   /* 10px */
+  --radius-lg:  0.75rem;    /* 12px — used by gallery items       */
+  --radius-xl:  1rem;       /* 16px                                */
+  --radius-pill: 999px;
+
+  /* ============================================================ */
+  /*  Z-INDEX SCALE                                               */
+  /* ============================================================ */
+  --z-base:    1;
+  --z-nav:     40;
+  --z-overlay: 60;
+  --z-modal:   80;
+  --z-toast:   90;
+
+  /* ============================================================ */
+  /*  TYPEFACE STACKS                                             */
+  /* ============================================================ */
+  --font-sans: 'Geist', ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+/* Global reduced-motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

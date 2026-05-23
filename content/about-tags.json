@@ -1,0 +1,6 @@
+[
+  { "file": "about-hero.jpg", "tag": "CEO · TARAS BARANOVSKYY", "role": "anchor" },
+  { "file": "about-01.jpg", "tag": "CTO · VIKTOR KUTS", "role": "satellite" },
+  { "file": "about-02.jpg", "tag": "FRONTEND · ROMAN HUMENUYK", "role": "satellite" },
+  { "file": "about-03.jpg", "tag": "BACKEND · PARV PATEL", "role": "satellite" }
+]

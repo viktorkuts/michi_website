@@ -54,6 +54,13 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    // Force the static preset. Without this, Nuxt 4 auto-detects the
+    // CF Pages build env (`CF_PAGES=1`) and silently swaps in
+    // `cloudflare-module`, which writes `.output/server/wrangler.json`
+    // with a reserved `ASSETS` binding that Pages rejects. We deploy
+    // pure static + Pages Functions (in `functions/` at project root),
+    // so the runtime worker output is unwanted dead weight.
+    preset: 'static',
     compressPublicAssets: true,
     // Static deploy target — Cloudflare Pages serves `.output/public/`
     // as pure HTML+JS+CSS. Nitro runs ONLY at build time: it walks the

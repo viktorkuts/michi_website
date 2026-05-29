@@ -329,6 +329,8 @@ function phaseClass(i: number) {
   width: 100%;
   height: 100%;
   padding-block: var(--space-8);
+  /* nudge the pinned phone + copy lower in the viewport */
+  transform: translateY(20px);
 }
 
 /* ----------------------------------------------------------------
@@ -351,6 +353,7 @@ function phaseClass(i: number) {
     height: auto;
     padding-block: var(--space-12);
     gap: var(--space-8);
+    transform: none;
   }
   .feature-block {
     position: relative;
@@ -379,6 +382,8 @@ function phaseClass(i: number) {
 @media (max-width: 1023px) {
   .features-pin__phone {
     justify-content: center;
+    /* lower the phone (and the copy below it) in the mobile stack */
+    margin-top: 40px;
   }
 }
 
@@ -406,6 +411,7 @@ function phaseClass(i: number) {
   .features-pin__copy {
     height: auto;
     min-height: 0;
+    margin-top: 15px;
   }
 }
 
@@ -441,11 +447,23 @@ function phaseClass(i: number) {
 .feature-block__h {
   margin: 0;
   text-wrap: balance;
+  font-size: calc(var(--type-display-sm-size) - 5px);
 }
 .feature-block__b {
   margin: 0;
   max-width: 36rem;
   color: var(--ink-secondary);
+}
+
+/* Mobile: feature copy 5px smaller than its current size (headline is
+   already -5px above, so -10px total here) + nudged 15px lower. */
+@media (max-width: 1023px) {
+  .feature-block__h {
+    font-size: calc(var(--type-display-sm-size) - 10px);
+  }
+  .feature-block__b {
+    font-size: calc(var(--type-body-size) - 5px);
+  }
 }
 
 /* ----------------------------------------------------------------
@@ -460,6 +478,7 @@ function phaseClass(i: number) {
     grid-template-columns: 1fr;
     gap: var(--space-8);
     padding-block: var(--space-16);
+    transform: none;
   }
   .features-pin__copy {
     height: auto;

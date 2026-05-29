@@ -114,5 +114,6 @@ function onTabClick(e: MouseEvent, anchor: string) {
 
 .mobile-tabs__label {
   line-height: 1;
+  text-align: center;
 }
 </style>

@@ -49,7 +49,7 @@ export const onRequest: PagesFunction<Env> = async ({ params, env }) => {
       "Content-Type": "text/html; charset=utf-8",
       "Cache-Control": "public, max-age=60, stale-while-revalidate=600",
       "Content-Security-Policy":
-        "default-src 'self'; img-src https: data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; frame-ancestors 'none'",
+        "default-src 'self'; img-src https: data:; style-src 'unsafe-inline'; script-src 'none'; frame-ancestors 'none'",
       "X-Content-Type-Options": "nosniff",
       "Referrer-Policy": "strict-origin-when-cross-origin",
     },

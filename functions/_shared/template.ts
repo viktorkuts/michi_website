@@ -25,6 +25,13 @@ const APP_STORE_URL = "https://apps.apple.com/app/synq";
 const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.synq.app";
 const SITE_URL = "https://michi.quest";
 
+// iOS App Store numeric id for the Smart App Banner (the digits in the
+// store URL, e.g. id1234567890 → "1234567890"). The banner is the
+// OS-native way to surface "OPEN" when the app is installed; emitted only
+// when set so we never ship an invalid placeholder app-id.
+// TODO(release): set once the App Store listing exists.
+const IOS_APP_ID: string | null = null;
+
 // HTML-escape minimal — only the chars that change parser state inside
 // element text content + double-quoted attribute values. Server is the
 // only string source here (BE-issued), but defense-in-depth costs ~0.
@@ -187,31 +194,13 @@ h1 {
 }
 `;
 
-const deeplinkScript = (deeplink: string): string => `
-(function () {
-  var dl = ${JSON.stringify(deeplink)};
-  var iosStore = ${JSON.stringify(APP_STORE_URL)};
-  var androidStore = ${JSON.stringify(PLAY_STORE_URL)};
-  var ua = navigator.userAgent || "";
-  var isAndroid = /android/i.test(ua);
-  var isIos = /iphone|ipad|ipod/i.test(ua);
-  if (!isAndroid && !isIos) return;
-  var store = isAndroid ? androidStore : iosStore;
-  var t0 = Date.now();
-  // Universal Link / App Link should intercept BEFORE the location
-  // change resolves. If the app opens, the browser tab goes to bg —
-  // document.hidden flips true.
-  setTimeout(function () {
-    // Page still foregrounded after 1.5s → app not installed → store.
-    if (!document.hidden && Date.now() - t0 < 2500) {
-      window.location.href = store;
-    }
-  }, 1500);
-  // Custom scheme fallback covers post-install grace window where
-  // AASA / assetlinks haven't been re-verified yet.
-  try { window.location.href = dl; } catch (_) {}
-})();
-`;
+// Universal-Links-first: NO JS auto-redirect. When the app is installed,
+// iOS/Android intercept the https link at the OS level and this page never
+// paints. When it DOES paint, the app is (almost always) not installed —
+// show the card with a manual "Open in app" button + store links instead
+// of auto-firing `synq://` (which flashed an error / bounced to the store
+// even when the app was installed). The Smart App Banner covers the rare
+// installed-but-UL-missed case.
 
 const render = (i: RenderInput): string => `<!doctype html>
 <html lang="en">
@@ -229,7 +218,7 @@ ${i.ogImage ? `<meta property="og:image" content="${esc(i.ogImage)}">` : ""}
 <meta name="twitter:title" content="${esc(i.ogTitle)}">
 <meta name="twitter:description" content="${esc(i.ogDescription)}">
 ${i.ogImage ? `<meta name="twitter:image" content="${esc(i.ogImage)}">` : ""}
-<meta name="apple-itunes-app" content="app-id=PLACEHOLDER_IOS_APP_ID, app-argument=${esc(i.iosSmartBanner)}">
+${IOS_APP_ID ? `<meta name="apple-itunes-app" content="app-id=${IOS_APP_ID}, app-argument=${esc(i.iosSmartBanner)}">` : ""}
 <meta name="theme-color" content="#F7F4EE">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/geist-sans-400.woff2" crossorigin="anonymous">
@@ -240,7 +229,6 @@ ${i.ogImage ? `<meta name="twitter:image" content="${esc(i.ogImage)}">` : ""}
 <main class="card">
 ${i.bodyHtml}
 </main>
-<script>${deeplinkScript(i.deeplink)}</script>
 </body>
 </html>`;
 

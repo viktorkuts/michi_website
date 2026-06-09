@@ -68,7 +68,7 @@ export const onRequest: PagesFunction<Env> = async ({ params, env }) => {
       // SPEC V11: inline style + JS for the deeplink dance, no
       // third-party scripts; cover image rides through CF's CDN.
       "Content-Security-Policy":
-        "default-src 'self'; img-src https: data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; frame-ancestors 'none'",
+        "default-src 'self'; img-src https: data:; style-src 'unsafe-inline'; script-src 'none'; frame-ancestors 'none'",
       "X-Content-Type-Options": "nosniff",
       "Referrer-Policy": "strict-origin-when-cross-origin",
     },

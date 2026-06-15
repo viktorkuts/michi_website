@@ -35,6 +35,12 @@ export function useFrameSequence(opts: Options) {
   const progress = ref(0)              // 0..1 raw scroll progress
   const lerped = ref(0)                // 0..1 smoothed
   const preload = ref(0)               // 0..1 preload progress
+  // Per-frame horizontal subject center (0..1 of image width). The lit
+  // person moves through the room across the 169 frames, so each frame
+  // gets its own value. Computed once after preload via a luminance
+  // centroid (the subject is brightly lit against a dark room). Empty
+  // until analysis finishes → draw() falls back to plain centered cover.
+  const focusX = ref<number[]>([])
   // Average relative luminance (0..1) of the region the text overlay sits
   // over. Sampled after each frame draw; used to flip ink↔ivory on text
   // and nav so contrast holds across cinematic frames.
@@ -46,6 +52,7 @@ export function useFrameSequence(opts: Options) {
   let rafId: number | null = null
   let resizeObs: ResizeObserver | null = null
   let lastSampledIdx = -1
+  let dpr = 1                              // device pixel ratio (set in attach)
 
   function pad(i: number) { return String(i).padStart(4, '0') }
 
@@ -89,6 +96,62 @@ export function useFrameSequence(opts: Options) {
     }
     await Promise.all(promises)
     ready.value = true
+    // Subject tracking is non-blocking — kick it off after frames are
+    // ready so the canvas starts scrubbing immediately (centered cover
+    // until per-frame offsets land).
+    analyzeSubjects()
+  }
+
+  /**
+   * Compute the horizontal subject center (0..1) for every frame and store
+   * it in focusX. Each frame is drawn into a small offscreen canvas and a
+   * luminance-weighted centroid is taken over the columns: the subject is
+   * brightly lit against a dark room, so the lit mass pulls the centroid
+   * onto the person. Runs once, downscaled (~160px wide) so all 169 frames
+   * process in a few ms total.
+   */
+  function analyzeSubjects() {
+    const aw = 160
+    const a = document.createElement('canvas')
+    const actx = a.getContext('2d', { alpha: false })
+    if (!actx) return
+    const out = new Array(count).fill(0.5)
+    for (let i = 0; i < count; i++) {
+      const img = frames[i]
+      if (!img || !img.naturalWidth) { out[i] = 0.5; continue }
+      const ah = Math.max(1, Math.round((aw * img.naturalHeight) / img.naturalWidth))
+      a.width = aw
+      a.height = ah
+      actx.drawImage(img, 0, 0, aw, ah)
+      let data: Uint8ClampedArray
+      try {
+        data = actx.getImageData(0, 0, aw, ah).data
+      } catch {
+        out[i] = 0.5
+        continue
+      }
+      // Pass 1 — column luminance sums + global mean.
+      const col = new Float64Array(aw)
+      let mean = 0
+      for (let p = 0, x = 0; p < data.length; p += 4) {
+        const lum = (data[p] * 0.2126 + data[p + 1] * 0.7152 + data[p + 2] * 0.0722) / 255
+        col[x] += lum
+        mean += lum
+        x = x + 1 === aw ? 0 : x + 1
+      }
+      mean /= (aw * ah)
+      // Pass 2 — centroid over columns, weighting only above-mean (lit)
+      // energy so the dark background contributes ~nothing.
+      const thresh = mean * ah
+      let num = 0
+      let den = 0
+      for (let x = 0; x < aw; x++) {
+        const w = col[x] - thresh
+        if (w > 0) { num += w * x; den += w }
+      }
+      out[i] = den > 0 ? num / (den * (aw - 1)) : 0.5
+    }
+    focusX.value = out
   }
 
   function draw() {
@@ -106,6 +169,32 @@ export function useFrameSequence(opts: Options) {
     let dw = w, dh = h, dx = 0, dy = 0
     if (ir > cr) {
       dh = h; dw = h * ir; dx = (w - dw) / 2
+      // Mobile (portrait canvas): the landscape frame is cropped on the
+      // sides, so plain centering can push the off-center subject out of
+      // frame. Frames 1..34 hold frame 1's framing; from frame 35 the crop
+      // glides (smoothstep) to a fixed final framing. Clamped to crop
+      // bounds so no empty edges appear.
+      if (cr < 1 && focusX.value.length) {
+        // Base framing = frame 1's tracked subject centered.
+        const fx0 = focusX.value[0] ?? 0.5
+        const dxStart = w / 2 - fx0 * dw
+        // Final framing = centered crop nudged left so the closing frame
+        // reads correct (centered alone sat 200px too far right).
+        const FINAL_SHIFT_LEFT_PX = -200
+        const dxFinal = (w - dw) / 2 - FINAL_SHIFT_LEFT_PX * dpr
+        // Ramp factor — 0 for frames 1..35, smoothstep to 1 at the last.
+        const s = 34            // 0-indexed frame 35
+        const last = count - 1
+        let e = 0
+        if (idx > s && last > s) {
+          const t = (idx - s) / (last - s)
+          e = t * t * (3 - 2 * t) // smoothstep
+        }
+        dx = dxStart + (dxFinal - dxStart) * e
+        const min = w - dw // dw >= w, so min <= 0
+        if (dx > 0) dx = 0
+        else if (dx < min) dx = min
+      }
     } else {
       dw = w; dh = w / ir; dy = (h - dh) / 2
     }
@@ -165,7 +254,7 @@ export function useFrameSequence(opts: Options) {
   function attach(el: HTMLCanvasElement) {
     canvas = el
     ctx = el.getContext('2d', { alpha: false })
-    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    dpr = Math.min(window.devicePixelRatio || 1, 2)
     const resize = () => {
       if (!canvas) return
       const rect = canvas.getBoundingClientRect()

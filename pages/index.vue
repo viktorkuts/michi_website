@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 
 useHead({
-  title: 'Synq — More life outside.',
+  title: 'Michi — More life outside.',
   meta: [
     { name: 'description', content: 'Find what\'s happening near you. Meet people through the things you actually do.' },
   ],

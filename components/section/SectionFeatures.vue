@@ -57,7 +57,7 @@ const features: Feature[] = [
     number: '04',
     eyebrow: 'SHOW UP',
     headline: 'You know who you\'re meeting before you go.',
-    body: 'Verified phone number. Real name. A few photos. The people on Synq are accountable — and you are too.',
+    body: 'Verified phone number. Real name. A few photos. The people on Michi are accountable — and you are too.',
   },
 ]
 
@@ -194,7 +194,7 @@ function phaseClass(i: number) {
               :screens="phoneScreens"
               :active-index="activeIndex"
               :width="phoneWidth"
-              aria-label="Synq app preview"
+              aria-label="Michi app preview"
             />
           </div>
 

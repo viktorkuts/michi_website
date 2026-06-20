@@ -79,7 +79,7 @@ const showTicker = computed(() => mounted.value && !reduced.value && !isCompact.
       :class="{ 'is-hover': isHover, 'is-flash': tickFlash }"
       role="status"
       aria-live="polite"
-      aria-label="Synq live activity"
+      aria-label="Michi live activity"
       @mouseenter="isHover = true"
       @mouseleave="isHover = false"
       @focusin="isHover = true"

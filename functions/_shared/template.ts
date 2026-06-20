@@ -222,7 +222,7 @@ const render = (i: RenderInput): string => `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>${esc(i.ogTitle)} — Synq</title>
+<title>${esc(i.ogTitle)} — Michi</title>
 <meta name="description" content="${esc(i.ogDescription)}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${esc(i.pageUrl)}">
@@ -276,7 +276,7 @@ export const renderEventShareHtml = (data: EventShareData): string => {
     );
   }
   bodyParts.push(`<div class="body">`);
-  bodyParts.push(`<div class="kicker">Event on Synq</div>`);
+  bodyParts.push(`<div class="kicker">Event on Michi</div>`);
   bodyParts.push(`<h1>${esc(data.title)}</h1>`);
   if (data.hostName) {
     bodyParts.push(`<div class="meta">Hosted by ${esc(data.hostName)}</div>`);
@@ -299,7 +299,7 @@ export const renderEventShareHtml = (data: EventShareData): string => {
   // installed; benign reload when not), NOT `synq://` — see strategy note.
   bodyParts.push(`<a class="cta" href="${esc(pageUrl)}">Open in app</a>`);
   bodyParts.push(
-    `<div class="foot">Don't have Synq? <a href="${esc(APP_STORE_URL)}">App Store</a> · <a href="${esc(PLAY_STORE_URL)}">Play Store</a></div>`,
+    `<div class="foot">Don't have Michi? <a href="${esc(APP_STORE_URL)}">App Store</a> · <a href="${esc(PLAY_STORE_URL)}">Play Store</a></div>`,
   );
   bodyParts.push(`</div>`);
 
@@ -327,7 +327,7 @@ export const renderProfileShareHtml = (data: ProfileShareData): string => {
     bodyParts.push(`<div class="avatar"></div>`);
   }
   bodyParts.push(`<div class="body">`);
-  bodyParts.push(`<div class="kicker">Profile on Synq</div>`);
+  bodyParts.push(`<div class="kicker">Profile on Michi</div>`);
   bodyParts.push(`<h1>${esc(data.displayName)}</h1>`);
   if (data.city) {
     bodyParts.push(`<div class="meta">${esc(data.city)}</div>`);
@@ -336,15 +336,15 @@ export const renderProfileShareHtml = (data: ProfileShareData): string => {
   // installed; benign reload when not), NOT `synq://` — see strategy note.
   bodyParts.push(`<a class="cta" href="${esc(pageUrl)}">Open in app</a>`);
   bodyParts.push(
-    `<div class="foot">Don't have Synq? <a href="${esc(APP_STORE_URL)}">App Store</a> · <a href="${esc(PLAY_STORE_URL)}">Play Store</a></div>`,
+    `<div class="foot">Don't have Michi? <a href="${esc(APP_STORE_URL)}">App Store</a> · <a href="${esc(PLAY_STORE_URL)}">Play Store</a></div>`,
   );
   bodyParts.push(`</div>`);
 
   const description = data.isPrivate
-    ? "Open Synq to view this profile."
+    ? "Open Michi to view this profile."
     : data.city
-      ? `${data.displayName} on Synq · ${data.city}`
-      : `${data.displayName} on Synq`;
+      ? `${data.displayName} on Michi · ${data.city}`
+      : `${data.displayName} on Michi`;
 
   return render({
     ogTitle: data.displayName,
@@ -381,10 +381,10 @@ export const renderInviteShareHtml = (data: InviteShareData): string => {
     bodyParts.push(`<div class="avatar"></div>`);
   }
   bodyParts.push(`<div class="body">`);
-  bodyParts.push(`<div class="kicker">Friend invite on Synq</div>`);
+  bodyParts.push(`<div class="kicker">Friend invite on Michi</div>`);
   if (active) {
     bodyParts.push(`<h1>${esc(data.ownerName)}</h1>`);
-    bodyParts.push(`<div class="meta">wants to connect on Synq</div>`);
+    bodyParts.push(`<div class="meta">wants to connect on Michi</div>`);
     // CTA targets the https self-URL (Universal/App Link handoff when
     // installed; benign reload when not), NOT `synq://` — see strategy note.
     bodyParts.push(`<a class="cta" href="${esc(pageUrl)}">Add in app</a>`);
@@ -395,15 +395,15 @@ export const renderInviteShareHtml = (data: InviteShareData): string => {
     );
   }
   bodyParts.push(
-    `<div class="foot">Don't have Synq? <a href="${esc(APP_STORE_URL)}">App Store</a> · <a href="${esc(PLAY_STORE_URL)}">Play Store</a></div>`,
+    `<div class="foot">Don't have Michi? <a href="${esc(APP_STORE_URL)}">App Store</a> · <a href="${esc(PLAY_STORE_URL)}">Play Store</a></div>`,
   );
   bodyParts.push(`</div>`);
 
   return render({
-    ogTitle: active ? `${data.ownerName} on Synq` : "Synq invite",
+    ogTitle: active ? `${data.ownerName} on Michi` : "Michi invite",
     ogDescription: active
-      ? `${data.ownerName} invited you to connect on Synq.`
-      : "This Synq invite link is no longer active.",
+      ? `${data.ownerName} invited you to connect on Michi.`
+      : "This Michi invite link is no longer active.",
     ogImage: active ? data.ownerImage : null,
     pageUrl,
     deeplink,

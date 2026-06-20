@@ -66,7 +66,7 @@ withDefaults(defineProps<Props>(), {
         <!-- Single-slot mode (back-compat) -->
         <slot v-else>
           <div class="ui-phone__placeholder">
-            <span class="ui-phone__layer-title">Synq</span>
+            <span class="ui-phone__layer-title">Michi</span>
           </div>
         </slot>
       </div>

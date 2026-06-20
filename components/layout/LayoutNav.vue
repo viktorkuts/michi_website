@@ -68,8 +68,8 @@ async function onDownloadClick(e: MouseEvent) {
     <a href="#main" class="skip-link">Skip to content</a>
 
     <div class="layout-nav__inner container-shell">
-      <NuxtLink to="/" class="layout-nav__brand" aria-label="Synq home">
-        <span class="layout-nav__wordmark">Synq</span>
+      <NuxtLink to="/" class="layout-nav__brand" aria-label="Michi home">
+        <span class="layout-nav__wordmark">Michi</span>
       </NuxtLink>
 
       <nav class="layout-nav__links" aria-label="Primary">

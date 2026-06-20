@@ -68,7 +68,7 @@ const helpLinks = [
   <footer id="footer" class="layout-footer">
     <div class="container-shell layout-footer__grid">
       <div class="layout-footer__brand">
-        <span class="layout-footer__wordmark type-display-md">Synq</span>
+        <span class="layout-footer__wordmark type-display-md">Michi</span>
         <span class="layout-footer__tagline type-body">More life outside.</span>
         <a class="layout-footer__support type-body" href="mailto:contact@synqtogether.com">
           contact@synqtogether.com

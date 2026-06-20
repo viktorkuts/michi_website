@@ -26,7 +26,7 @@ const satellites = computed(() => items.value?.filter(i => i.role === 'satellite
           The apps I opened most were the ones I liked least. Feeds,
           friend counts, performance reviews of my own life. I wanted
           the opposite — an app you close after thirty seconds because
-          you're already on your way somewhere. Synq does one thing:
+          you're already on your way somewhere. Michi does one thing:
           it helps you find a plan, show up, and meet the people who
           showed up too. The rest of the night is the point.
         </p>

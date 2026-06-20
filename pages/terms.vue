@@ -4,9 +4,9 @@ const { data: page } = await useAsyncData('legal-terms', () =>
 )
 
 useHead({
-  title: page.value?.title ? `${page.value.title} — Synq` : 'Terms of Use — Synq',
+  title: page.value?.title ? `${page.value.title} — Michi` : 'Terms of Use — Michi',
   meta: [
-    { name: 'description', content: page.value?.description ?? 'Synq terms of use.' },
+    { name: 'description', content: page.value?.description ?? 'Michi terms of use.' },
   ],
 })
 

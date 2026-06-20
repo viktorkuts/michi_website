@@ -4,9 +4,9 @@ const { data: page } = await useAsyncData('legal-account-deletion', () =>
 )
 
 useHead({
-  title: page.value?.title ? `${page.value.title} — Synq` : 'Account Deletion — Synq',
+  title: page.value?.title ? `${page.value.title} — Michi` : 'Account Deletion — Michi',
   meta: [
-    { name: 'description', content: page.value?.description ?? 'How to delete your Synq account.' },
+    { name: 'description', content: page.value?.description ?? 'How to delete your Michi account.' },
   ],
 })
 

@@ -2,8 +2,8 @@
 import { ref, computed } from 'vue'
 
 useHead({
-  title: 'Contact — Synq',
-  meta: [{ name: 'description', content: 'Get in touch with Synq.' }],
+  title: 'Contact — Michi',
+  meta: [{ name: 'description', content: 'Get in touch with Michi.' }],
 })
 
 const name = ref('')

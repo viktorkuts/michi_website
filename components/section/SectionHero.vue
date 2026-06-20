@@ -6,23 +6,6 @@ const sectionRef = ref<HTMLElement | null>(null)
 const reduced = useReducedMotion()
 const heroBg = useHeroBackground()
 
-// Live local time stamp — renders as "TUE · MAY 7 · 6:42 PM · BROOKLYN".
-// Re-evaluates once a minute so the chip ticks on long sessions.
-// Renders as a stable string on the server (date only, no minute) so
-// hydration matches; the client picks up minute precision on mount.
-function formatStamp(d: Date) {
-  const day = ['SUN','MON','TUE','WED','THU','FRI','SAT'][d.getDay()]
-  const mon = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][d.getMonth()]
-  let h = d.getHours()
-  const ampm = h >= 12 ? 'PM' : 'AM'
-  h = h % 12 || 12
-  const m = String(d.getMinutes()).padStart(2, '0')
-  return `${day} · ${mon} ${d.getDate()} · ${h}:${m} ${ampm}`
-}
-const stampStatic = formatStamp(new Date())
-const stamp = ref(stampStatic)
-let stampTimer: number | null = null
-
 // Desktop frames live at /hero/desktop/frame_NNNN.webp (169 frames).
 // Mobile frames not yet supplied, so reuse the desktop pattern; the
 // canvas drawImage uses object-fit: cover, so portrait viewports crop
@@ -92,12 +75,6 @@ onMounted(() => {
     inViewObs.observe(sectionRef.value)
   }
 
-  // Tick the stamp once a minute so it stays current during long sessions.
-  stamp.value = formatStamp(new Date())
-  stampTimer = window.setInterval(() => {
-    stamp.value = formatStamp(new Date())
-  }, 60_000)
-
   if (reduced.value) {
     setProgress(0.5)
     progress.value = 1
@@ -122,7 +99,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (scrollHandler) window.removeEventListener('scroll', scrollHandler)
   if (rafId !== null) cancelAnimationFrame(rafId)
-  if (stampTimer !== null) clearInterval(stampTimer)
   inViewObs?.disconnect()
 })
 </script>
@@ -152,19 +128,10 @@ onBeforeUnmount(() => {
       </Transition>
 
       <!-- Text overlay — corner-anchored composition.
-           Top-left: live timestamp slug.
-           Bottom-left: headline + sub.
+           Bottom-left: headline.
            Bottom-right: CTAs.
            Each block reveals on its own scroll window. -->
       <div class="section-hero__overlay container-shell">
-        <div
-          class="section-hero__stamp type-caption"
-          :style="{ '--reveal': headlineReveal }"
-        >
-          <span class="section-hero__stamp-dot" aria-hidden="true" />
-          <span class="section-hero__stamp-text">{{ stamp }} · BROOKLYN</span>
-        </div>
-
         <div class="section-hero__copy">
           <h1
             class="section-hero__headline type-display-xl"
@@ -225,7 +192,7 @@ onBeforeUnmount(() => {
   z-index: 2;
   height: 100%;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 1fr auto;
   grid-template-columns: 1fr;
   gap: var(--space-6);
   padding-block: calc(var(--space-16) + var(--space-6)) var(--space-12);
@@ -234,43 +201,13 @@ onBeforeUnmount(() => {
 @media (min-width: 768px) {
   .section-hero__overlay {
     grid-template-columns: 1.5fr 1fr;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: 1fr auto;
     grid-template-areas:
-      'stamp stamp'
       '.     .'
       'copy  ctas';
     align-items: end;
     padding-block: calc(var(--space-16) + var(--space-6)) var(--space-16);
   }
-}
-
-/* Stamp — top-left ribbon. Mono caption with brand dot.
-   Sits in its own grid row so it never collides with the headline. */
-.section-hero__stamp {
-  grid-area: stamp;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  align-self: start;
-  justify-self: start;
-  color: var(--ink-muted);
-  letter-spacing: 0.10em;
-  opacity: var(--reveal, 0);
-  transform: translate3d(0, calc((1 - var(--reveal, 0)) * 8px), 0);
-  transition: color 320ms var(--ease-out-expo);
-}
-.section-hero__stamp-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--brand);
-  flex: 0 0 auto;
-  /* Subtle pulse — telegraphs "live", not decoration. */
-  animation: heroStampPulse 2.4s var(--ease-in-out-3) infinite;
-}
-@keyframes heroStampPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%      { opacity: 0.55; transform: scale(0.7); }
 }
 
 .section-hero__copy {
@@ -280,6 +217,24 @@ onBeforeUnmount(() => {
   gap: var(--space-4);
   max-width: 18ch;
   align-self: end;
+  justify-self: start;
+  text-align: left;
+  /* Lift the copy block 20px off the bottom edge. */
+  transform: translateY(-20px);
+}
+
+/* Mobile: lift the copy block higher; push CTAs down a touch and tighten
+   the gap between the stacked buttons. */
+@media (max-width: 767px) {
+  .section-hero__copy {
+    transform: translateY(-70px);
+  }
+  .section-hero__ctas {
+    /* position offset, not transform — transform drives the scroll reveal */
+    position: relative;
+    top: 30px;
+    gap: calc(var(--space-3) / 4);
+  }
 }
 
 @media (min-width: 1024px) {
@@ -304,6 +259,10 @@ onBeforeUnmount(() => {
  */
 .section-hero__headline {
   margin: 0;
+  /* ~3 steps bigger than type-display-xl (which caps at 8rem). */
+  font-size: clamp(4.5rem, 1.5rem + 9vw, 11rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
   color: var(--ink-primary);
   text-wrap: balance;
   text-wrap: pretty;
@@ -356,9 +315,6 @@ onBeforeUnmount(() => {
 .section-hero.is-on-dark .section-hero__sub {
   color: rgb(247 244 238 / 0.78);
 }
-.section-hero.is-on-dark .section-hero__stamp {
-  color: rgb(247 244 238 / 0.65);
-}
 .section-hero.is-on-dark :deep(.ui-button--ghost) {
   color: var(--bg-primary);
 }
@@ -379,17 +335,13 @@ onBeforeUnmount(() => {
 @media (prefers-reduced-motion: reduce) {
   .section-hero__headline,
   .section-hero__sub,
-  .section-hero__ctas,
-  .section-hero__stamp {
+  .section-hero__ctas {
     opacity: 1 !important;
     transform: none !important;
   }
   .section-hero__headline,
   .section-hero__sub {
     transition: none !important;
-  }
-  .section-hero__stamp-dot {
-    animation: none !important;
   }
 }
 

@@ -33,7 +33,7 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: '#F7F4EE' },
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/x-icon', href: '/michi.png' },
         { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/geist-sans-400.woff2', crossorigin: 'anonymous' },
         { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/geist-sans-600.woff2', crossorigin: 'anonymous' },
       ],

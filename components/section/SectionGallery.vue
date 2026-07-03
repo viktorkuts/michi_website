@@ -144,7 +144,7 @@ function openLightbox(item: GalleryItem) {
   overflow: hidden;
   border-radius: var(--radius-lg);
   border: 1px solid var(--rule-on-clay);
-  background: linear-gradient(135deg, #2A1B12, #1B1410);
+  background: linear-gradient(135deg, #2A1B12, #FFFFFF);
   transition: border-color 240ms var(--ease-out-expo);
 }
 .gallery-card__media :deep(img) {

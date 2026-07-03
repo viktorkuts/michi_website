@@ -96,7 +96,7 @@ const baseStyles = `
   --ink-primary: #14121A;
   --ink-secondary: #4F4B65;
   --ink-muted: #6E6982;
-  --brand: #C0411C;
+  --brand: #00F0FF;
   --brand-hover: #A23615;
   --brand-soft: #FBE7DF;
   --rule: #E8E2D5;

@@ -172,15 +172,17 @@ const members = computed(() => {
 /* Mobile — stack vertically, no diagonal */
 @media (max-width: 767px) {
   .section-about__strip {
-    flex-direction: column;
-    border-radius: var(--radius-lg);
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-radius: 0;
   }
   .strip-card {
-    clip-path: none;
+    flex: 0 0 calc(50% - var(--space-3) / 2);
+    clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
     margin-inline: 0;
   }
   .strip-card__media {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 3 / 4;
   }
 }
 

@@ -6,7 +6,6 @@
       <slot />
     </main>
     <LayoutFooter />
-    <UiLiveTicker />
   </div>
 </template>
 

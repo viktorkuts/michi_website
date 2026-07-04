@@ -1,8 +1,15 @@
 # Michi — Content Ledger
 
-Every placeholder string on the site lives here so the user can review
-in one place before launch. `{{TOKEN}}` blocks are the things to
-replace; everything else is final-quality v1 copy.
+Single place to review every user-facing string before launch.
+`{{TOKEN}}`-style items are still placeholders; everything else is
+final-quality copy. Live sources of truth:
+
+- Hero / How-it-works / About: hardcoded in the section components.
+- Stats: `content/stats.json` (rendered via `/api/data/stats`).
+- Gallery tags: `content/gallery-tags.json`.
+- About tags: `content/about-tags.json`.
+- FAQ: `content/faq/*.md` (one file per tab).
+- Legal: `content/legal/*.md` (en + fr).
 
 ---
 
@@ -10,247 +17,84 @@ replace; everything else is final-quality v1 copy.
 
 ```
 Headline:    More life outside.
+Subhead:     Find what's happening near you. Meet people through the
+             things you actually do.
 
-Subhead:     Find what's happening near you. Meet people through the things
-             you actually do.
-
-Primary CTA:    Download for iOS         href="#" (placeholder)
-Secondary CTA:  Get it on Android        href="#" (placeholder)
+Primary CTA:    Download for iOS         href="#" (PLACEHOLDER — App Store URL)
+Secondary CTA:  Get it on Android        href="#" (PLACEHOLDER — Play Store URL)
 ```
 
 ---
 
-## Intro / description (§5A)
+## Intro / stats (§5)
 
 ```
-Michi is built for what happens after you put your phone down.
-
-Find plans near you. Show up. Meet the people who showed up too.
+Eyebrow:   WHY THIS, WHY NOW
+Headline:  The phone took the room. / We're building the way back.
 ```
+
+Three numbers from `content/stats.json`, each with a public source +
+link (BLS time-use, CDC inactivity, Surgeon General loneliness).
+Rendered as one compact band; the numbers support the headline, they
+don't dominate the page.
 
 ---
 
-## Stats (§5B) — `content/stats.json`
-
-Each stat has a `verify: true` flag rendered as a `[VERIFY]` mono tag
-inline. The user removes the flag once the source is confirmed.
-
-| value | label | source |
-|-------|-------|--------|
-| 4h 37m | Average daily smartphone use, US adults | DATA.AI, 2024 |
-| 1 in 2 | Young adults who report feeling lonely | CIGNA LONELINESS INDEX, 2023 |
-| 38% | Gen Z adults with no close friends | AMERICAN PERSPECTIVES SURVEY, 2024 |
-
----
-
-## Features section intro (§6)
+## How it works (§6) — four steps, in SectionFeatures.vue
 
 ```
-Eyebrow:   WHAT Michi DOES
-Headline:  Five things, no feed.
+Eyebrow:   HOW IT WORKS
+Headline:  Four steps. No feed.
+Lead:      Everything in the app exists to get you from opening it to
+           being somewhere. Here's the whole loop.
+
+01 — DISCOVER   See what's on tonight, near you.
+02 — HOST       Got something going? Put it up in a minute.
+03 — COORDINATE Sort the details in the plan's own chat.
+04 — SHOW UP    Show up and meet them for real.
 ```
 
-## Features blocks (§6) — five total
-
-```
-01 — DISCOVER
-Find plans nearby.
-Browse what's happening tonight, this weekend, or right now. Filter by
-what you're actually in the mood for.
-
-02 — JOIN
-Show up to something real.
-One tap to RSVP. The plan goes in your calendar, the chat opens, you go.
-
-03 — HOST
-Make a plan in seconds.
-Pick a place, set a time, say what it is. Anyone nearby who's interested
-can join.
-
-04 — MEET
-Talk to the people who'll be there.
-Group chats are scoped to the plan. They quiet down after. No permanent
-group threads you forget to leave.
-
-05 — KEEP IT SMALL
-Friend lists are capped on purpose.
-Michi limits how many people you can friend, so the app stays about the
-people you actually see.
-```
+Screens: /features/screen-1..4.webp — regenerate from the raw exports
+in assets/feature-screens/ with `npm run screens`.
 
 ---
 
 ## Gallery (§7)
 
 ```
-Eyebrow:   THE GALLERY
-
+Eyebrow:   THIS WEEK ON MICHI
 Headline:  Plans, not posts.
-
-Body:      What people are actually doing on Michi this week.
-           Tap any moment to see more.
 ```
 
-Gallery image tags — `content/gallery-tags.json`:
-
-```
-PICKUP BASKETBALL, BROOKLYN
-CLIMBING SESSION, BERLIN
-ROOFTOP DINNER, LISBON
-SUNDAY RUN CLUB, AUSTIN
-VINYL NIGHT, TOKYO
-POTTERY STUDIO, MONTREAL
-SURF CHECK, BIARRITZ
-CHESS IN THE PARK, NYC
-NEW MOVIE NIGHT, LA
-GALLERY OPENING, COPENHAGEN
-PIZZA POP-UP, MILAN
-PICKUP SOCCER, LONDON
-```
-
-12 entries to match the 12 image slots. User replaces tags with real
-event names once their gallery imagery lands.
+Tags in `content/gallery-tags.json` — Montreal-area events, mono caps.
 
 ---
 
-## About (§8)
+## About / founder (§8) — SectionAbout.vue
 
 ```
-Eyebrow:   ABOUT Michi
-
-Headline:  {{ABOUT_HEADLINE_PLACEHOLDER}}
-           default: "Built for what's outside."
-
-Story:     {{ABOUT_STORY_PLACEHOLDER}}
-           default ~120 words:
-
-We started Michi because the apps we used most were the ones we liked
-least. Endless feeds, performative posts, friend counts that meant
-nothing. We wanted the opposite — an app that pushed us off the phone
-and into the room. Michi is small on purpose. It does one thing: it
-helps you find a plan, show up, and meet the people who showed up
-too. That's it. The rest of your life is the point.
-
-Quote (floating, between satellites):
-           {{ABOUT_QUOTE_PLACEHOLDER}}
-           default: "We're building the app we wanted to use ourselves."
+Eyebrow:   FROM THE FOUNDER
+Headline:  Built for what's outside.
+Story:     First-person founder note (Montreal origin, why no feed,
+           "if Michi is working, you're not on it").
 ```
 
-About-section image tags — `content/about-tags.json`:
-
-```
-BROOKLYN, 2024     (anchor)
-FOUNDERS' MEETUP, 2025
-BERLIN, 2024
-LISBON LAUNCH, 2025
-TEAM DINNER, NYC, 2024
-```
+Team from `content/about-tags.json`: anchor (CEO) beside the note,
+three teammates in a row below.
 
 ---
 
 ## FAQ (§9) — `content/faq/*.md`
 
-Four tabs. Each Markdown file is one tab. 4–6 Q&A per tab. Below is the
-complete v1 copy. Edit in the .md files; the homepage reads them at
-build time.
+Four tabs: Getting started / Safety / Account / Events. Facts verified
+against the founder's product docs (Google/Apple sign-in, host approval
+on discovery joins, 365 friend cap with ~1-year auto-decay, friends
+added only through shared events / chats / proximity sync, group chats
+persist as clubs with events linked to them, city-by-city rollout).
 
-### Tab 1 — Getting started
-
-```
-Q: How do I sign up?
-A: Download Michi from the App Store or Play Store. Create an account
-   with your phone number. You're in.
-
-Q: What does Michi cost?
-A: Michi is free. We don't have ads and we don't sell data.
-
-Q: Where does Michi work?
-A: We're live in {{CITIES_PLACEHOLDER — VERIFY}}. New cities open every
-   month.
-
-Q: Do I need to be 18?
-A: You need to be at least 18 to use Michi.
-
-Q: What if my friends aren't on Michi?
-A: That's fine. Michi is built for meeting people you don't know yet —
-   not for hanging out with people you already see.
-```
-
-### Tab 2 — Safety
-
-```
-Q: How does Michi keep things safe?
-A: Every account is verified by phone number. Hosts can require photo
-   ID for any plan. We screen plan content for prohibited activity
-   before it goes live.
-
-Q: How do I report someone?
-A: Open their profile, tap the menu icon, choose Report. Reports go to
-   a real person within {{REPORT_RESPONSE_TIME — VERIFY: 24h}}.
-
-Q: What happens if I block someone?
-A: They can't see your profile, message you, or join any plan you're
-   in. They aren't told they were blocked.
-
-Q: Can I see who else is going before I show up?
-A: Yes. Every plan shows the host, the headcount, and other RSVP'd
-   members before you join.
-
-Q: What if someone no-shows?
-A: Hosts can mark no-shows. Repeated no-shows lower account standing
-   and limit access to popular plans.
-
-Q: Is my location shared?
-A: Only the city you're in. Never your exact location. Plans show a
-   neighborhood until you RSVP, then the address.
-```
-
-### Tab 3 — Account
-
-```
-Q: How do I delete my account?
-A: Settings → Account → Delete account. Your data is removed within 30
-   days. You can also email contact@Michitogether.com.
-
-Q: How do I change my phone number?
-A: Settings → Account → Change number. You'll verify the new number by
-   text.
-
-Q: Why is the friend list capped?
-A: Because Michi is about the people you actually see, not the people
-   you've ever met. The cap is currently {{FRIEND_CAP — VERIFY: 50}}.
-
-Q: Can I export my data?
-A: Yes. Settings → Privacy → Request data export. We send a download
-   link by email within 7 days.
-
-Q: Will Michi notify me when my friends post?
-A: There are no posts. Michi notifies you about plans, not activity
-   feeds.
-```
-
-### Tab 4 — Plans
-
-```
-Q: How do I create a plan?
-A: Tap the plus icon. Pick a place. Set a time. Write a one-line
-   description. Done.
-
-Q: How do I join a plan?
-A: Open the plan, tap RSVP. The plan goes in your calendar, the group
-   chat opens, you go.
-
-Q: Can I cancel an RSVP?
-A: Up to 2 hours before the plan starts. After that, you're marked as
-   no-show if you don't make it.
-
-Q: What happens to the group chat after?
-A: It quiets down 24 hours after the plan ends. You can still open it,
-   but no new notifications.
-
-Q: Can I host a recurring plan?
-A: Yes. When you create a plan, choose "weekly" or "every other week."
-```
+Removed: phone-number question (no phone field), data export, data
+selling, friend-post notifications, no-show flagging, RSVP cancellation
+window, recurring events (superseded by the club model).
 
 ---
 
@@ -258,49 +102,37 @@ A: Yes. When you create a plan, choose "weekly" or "every other week."
 
 ```
 Tagline:        More life outside.
-Support email:  contact@Michitogether.com  (verify or replace)
-
-Product:        Features · About · FAQ · Download
-Legal:          Privacy Policy · Terms of Use · Account Deletion
+Support email:  contact@michi.quest (footer, contact page, account
+                deletion; legal docs have no email references).
+Product:        How it works · About · FAQ · Download
+Legal:          Privacy (en/fr) · Terms (en/fr) · Account Deletion
 Help:           Contact · Press
-
-Social:         Instagram · LinkedIn · TikTok    (handles tbd)
-
-Copyright:      © 2026 Michi. All rights reserved.
+Social:         LinkedIn → linkedin.com/company/111004970. Instagram/
+                TikTok return when the handles exist.
+Copyright:      © {year} MICHI. ALL RIGHTS RESERVED.
 ```
 
 ---
 
-## 404
+## 404 / error
 
 ```
-Headline:  404
-Body:      This plan got cancelled. Let's get you back outside.
-CTA:       Back home → /
-```
-
----
-
-## Loader (initial paint)
-
-```
-Wordmark:  Michi
-Status:    {{progress}}%
+404:   This plan got cancelled. Let's get you back outside.
+Other: Something broke on our end. Try again in a moment.
+CTA:   Back home → /
 ```
 
 ---
 
 ## Verify-before-launch checklist
 
-- [ ] Stats sources verified or replaced; remove `verify: true` from
-      `content/stats.json` once each is confirmed.
-- [ ] Cities list filled in (FAQ Tab 1).
-- [ ] Friend cap number filled in (FAQ Tab 3).
-- [ ] Report response time filled in (FAQ Tab 2).
-- [ ] About headline + story + quote replaced (or kept as defaults).
-- [ ] Real gallery images and tags placed.
-- [ ] Real about-section images and tags placed.
-- [ ] Real hero frame sequence placed in `/public/hero/`.
-- [ ] App Store + Play Store URLs filled in (replace `#` in CTA hrefs).
-- [ ] Social handle URLs filled in.
-- [ ] Support email confirmed or replaced.
+- [ ] App Store + Play Store URLs (hero + nav Download).
+- [ ] Instagram / TikTok handles → add to footer social row.
+- [ ] Legal: effective dates + [legal entity name] blanks in
+      terms.md/terms-fr.md; remove the "draft, not legal advice"
+      blockquotes after counsel review.
+- [ ] FAQ facts to reconfirm in-app before launch: report response
+      time (24h), account-deletion email window (7 days).
+- [ ] Gallery: confirm "TREETOP ROPES COURSE, RAWDON" venue and the
+      "PALAZO" club spelling.
+- [ ] Real hero frame sequence stays in /public/hero/desktop/.

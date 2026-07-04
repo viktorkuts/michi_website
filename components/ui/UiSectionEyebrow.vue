@@ -23,7 +23,7 @@ defineProps<Props>()
   width: 6px;
   height: 6px;
   border-radius: 999px;
-  background: var(--brand);
+  background: var(--brand-ink);
   flex: 0 0 auto;
 }
 </style>

@@ -1,8 +1,8 @@
-# synq-web
+# michi-web
 
-Marketing site for **Synq** — a real-life social app. Tagline: *More life
+Marketing site for **Michi** — a real-life social app. Tagline: *More life
 outside.* Built per the contract in the master build prompt; design system
-locked in [DESIGN_BRIEF.md](./DESIGN_BRIEF.md).
+locked in [DESIGN.md](./DESIGN.md).
 
 ## Stack
 
@@ -84,13 +84,13 @@ server/
 
 ## The contract
 
-- [DESIGN_BRIEF.md](./DESIGN_BRIEF.md) — locked design system. All
+- [DESIGN.md](./DESIGN.md) — locked design system. All
   components reference its tokens. Edits to tokens go here first.
 - [SKILL_AUDIT.md](./SKILL_AUDIT.md) — proof of the 8 skill reads required
   by the master build prompt.
 - [CONTENT.md](./CONTENT.md) — every placeholder copy block in the site,
   flagged for user review.
-- [CONSISTENCY_CHECKLIST.md](./CONSISTENCY_CHECKLIST.md) — per-section QA.
+- [DESIGN.md](./DESIGN.md) — per-section QA.
 
 ## Brand-color rule
 

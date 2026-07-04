@@ -9,61 +9,78 @@ const { data: items } = await useFetch<AboutItem[]>('/api/data/about-tags', {
   key: 'about-tags',
 })
 
-const members = computed(() => {
-  if (!items.value) return []
-  const anchor = items.value.find(i => i.role === 'anchor')
-  const satellites = items.value.filter(i => i.role === 'satellite')
-  // Put anchor second (CEO in position 2 like the screenshot)
-  return [satellites[0], anchor, satellites[1], satellites[2]].filter(Boolean) as AboutItem[]
-})
+const anchor = computed(() => items.value?.find(i => i.role === 'anchor'))
+const satellites = computed(() => items.value?.filter(i => i.role === 'satellite') ?? [])
+
+function rolePart(tag: string) {
+  return tag.split('·').at(0)?.trim() ?? ''
+}
+function namePart(tag: string) {
+  return tag.split('·').at(1)?.trim() ?? ''
+}
 </script>
 
 <template>
   <UiSectionShell id="about" bg="primary">
     <div class="section-about">
 
-      <!-- A) Founder note -->
-      <header class="section-about__head">
-        <UiSectionEyebrow dot>FROM THE FOUNDER</UiSectionEyebrow>
-        <h2 class="type-display-md section-about__headline">
-          Built for what's
-          <span class="type-italic" style="color: var(--brand);">outside.</span>
-        </h2>
-        <p class="type-body-lg section-about__story">
-          The apps I opened most were the ones I liked least. Feeds,
-          friend counts, performance reviews of my own life. I wanted
-          the opposite — an app you close after thirty seconds because
-          you're already on your way somewhere. Michi does one thing:
-          it helps you find a plan, show up, and meet the people who
-          showed up too. The rest of the night is the point.
-        </p>
-      </header>
+      <!-- Founder note beside the founder — no orphaned columns -->
+      <div class="section-about__lede">
+        <header class="section-about__head">
+          <UiSectionEyebrow dot>FROM THE FOUNDER</UiSectionEyebrow>
+          <h2 class="type-display-md section-about__headline">
+            Built for what's
+            <span class="type-italic section-about__headline-em">outside.</span>
+          </h2>
+          <p class="type-body-lg section-about__story">
+            I started Michi in Montreal, after one too many weekends
+            where everyone I knew was "around" and nobody was actually
+            anywhere. Every app on my phone was built to keep me looking
+            at it, so we made one that gets you out the door instead.
+            You open Michi, find a basketball run nearby or tennis on
+            Thursday, and close it. The less time you spend in the app,
+            the better it's doing its job.
+          </p>
+        </header>
 
-      <!-- B) Diagonal strip -->
-      <div class="section-about__strip">
-        <figure
-          v-for="(member, i) in members"
-          :key="member.file"
-          class="strip-card"
-          :class="{ 'strip-card--anchor': member.role === 'anchor' }"
-        >
-          <span class="strip-card__media">
+        <figure v-if="anchor" class="about-card about-card--anchor">
+          <span class="about-card__media">
             <NuxtImg
-              :src="`/about/${member.file}`"
-              :alt="member.tag"
-              width="400"
-              height="560"
+              :src="`/about/${anchor.file}`"
+              :alt="`${namePart(anchor.tag)}, ${rolePart(anchor.tag)}`"
+              width="500"
+              height="640"
               loading="lazy"
               fit="cover"
             />
           </span>
-          <figcaption class="strip-card__caption">
-            <span class="type-caption strip-card__role">
-              {{ member.tag.split('·').at(0)?.trim() }}
-            </span>
-            <span class="strip-card__name">
-              {{ member.tag.split('·').at(1)?.trim() }}
-            </span>
+          <figcaption class="about-card__caption">
+            <span class="type-caption about-card__role">{{ rolePart(anchor.tag) }}</span>
+            <span class="about-card__name">{{ namePart(anchor.tag) }}</span>
+          </figcaption>
+        </figure>
+      </div>
+
+      <!-- The rest of the team — straight row, no gimmicks -->
+      <div class="section-about__team">
+        <figure
+          v-for="sat in satellites"
+          :key="sat.file"
+          class="about-card"
+        >
+          <span class="about-card__media">
+            <NuxtImg
+              :src="`/about/${sat.file}`"
+              :alt="`${namePart(sat.tag)}, ${rolePart(sat.tag)}`"
+              width="400"
+              height="500"
+              loading="lazy"
+              fit="cover"
+            />
+          </span>
+          <figcaption class="about-card__caption">
+            <span class="type-caption about-card__role">{{ rolePart(sat.tag) }}</span>
+            <span class="about-card__name">{{ namePart(sat.tag) }}</span>
           </figcaption>
         </figure>
       </div>
@@ -79,22 +96,34 @@ const members = computed(() => {
   gap: var(--space-16);
 }
 
+/* Founder note + anchor portrait share one two-column band */
+.section-about__lede {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-12);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .section-about__lede {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--space-16);
+  }
+}
+
 .section-about__head {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
   max-width: 36rem;
-  margin-left: auto;
-}
-@media (min-width: 1024px) {
-  .section-about__head {
-    margin-right: 8%;
-  }
 }
 
 .section-about__headline {
   margin: 0;
   text-wrap: balance;
+}
+.section-about__headline-em {
+  color: var(--brand-ink);
 }
 .section-about__story {
   margin: 0;
@@ -102,42 +131,25 @@ const members = computed(() => {
 }
 
 /* ----------------------------------------------------------------
- *  Diagonal strip
+ *  Cards — straight photos, hairline-free, captions below.
  * ---------------------------------------------------------------- */
-.section-about__strip {
-  display: flex;
-  align-items: flex-end;
-  gap: 0;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-}
-
-.section-about__strip {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--space-3);
-  overflow: visible;
-  border-radius: 0;
-}
-
-.strip-card {
+.about-card {
   margin: 0;
-  position: relative;
-  flex: 1;
   display: flex;
   flex-direction: column;
-  clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
-  transition: none;
+  gap: var(--space-3);
+  min-width: 0;
 }
 
-
-.strip-card__media {
+.about-card__media {
   display: block;
   width: 100%;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--bg-tinted);
 }
-.strip-card__media :deep(img) {
+.about-card__media :deep(img) {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -145,23 +157,32 @@ const members = computed(() => {
   transition: transform 500ms var(--ease-out-quart);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .about-card:hover .about-card__media :deep(img) {
+    transform: scale(1.03);
+  }
+}
 
-/* Caption sits below the image, outside the clip */
-.strip-card__caption {
+.about-card--anchor .about-card__media {
+  aspect-ratio: 4 / 5;
+}
+@media (min-width: 900px) {
+  .about-card--anchor {
+    justify-self: end;
+    width: min(100%, 26rem);
+  }
+}
+
+.about-card__caption {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  padding-top: var(--space-3);
-  padding-inline: var(--space-2);
 }
-
-.strip-card__role {
+.about-card__role {
   color: var(--ink-muted);
   letter-spacing: 0.1em;
-  font-size: 0.75rem;
 }
-
-.strip-card__name {
+.about-card__name {
   font-family: var(--font-sans);
   font-size: 0.9375rem;
   font-weight: 500;
@@ -169,26 +190,21 @@ const members = computed(() => {
   line-height: 1.2;
 }
 
-/* Mobile — stack vertically, no diagonal */
-@media (max-width: 767px) {
-  .section-about__strip {
-    flex-direction: row;
-    flex-wrap: wrap;
-    border-radius: 0;
-  }
-  .strip-card {
-    flex: 0 0 calc(50% - var(--space-3) / 2);
-    clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
-    margin-inline: 0;
-  }
-  .strip-card__media {
-    aspect-ratio: 3 / 4;
+/* Teammates: one row on desktop, two-up on small screens */
+.section-about__team {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+}
+@media (min-width: 768px) {
+  .section-about__team {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-8);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .strip-card,
-  .strip-card__media :deep(img) {
+  .about-card__media :deep(img) {
     transition: none;
   }
 }

@@ -134,8 +134,8 @@ export function useFrameSequence(opts: Options) {
       const col = new Float64Array(aw)
       let mean = 0
       for (let p = 0, x = 0; p < data.length; p += 4) {
-        const lum = (data[p] * 0.2126 + data[p + 1] * 0.7152 + data[p + 2] * 0.0722) / 255
-        col[x] += lum
+        const lum = ((data[p] ?? 0) * 0.2126 + (data[p + 1] ?? 0) * 0.7152 + (data[p + 2] ?? 0) * 0.0722) / 255
+        col[x] = (col[x] ?? 0) + lum
         mean += lum
         x = x + 1 === aw ? 0 : x + 1
       }
@@ -146,7 +146,7 @@ export function useFrameSequence(opts: Options) {
       let num = 0
       let den = 0
       for (let x = 0; x < aw; x++) {
-        const w = col[x] - thresh
+        const w = (col[x] ?? 0) - thresh
         if (w > 0) { num += w * x; den += w }
       }
       out[i] = den > 0 ? num / (den * (aw - 1)) : 0.5
@@ -228,9 +228,9 @@ export function useFrameSequence(opts: Options) {
       let n = 0
       // Stride: every 16 pixels = every 64 bytes (RGBA)
       for (let i = 0; i < data.length; i += 64) {
-        const r = data[i] / 255
-        const g = data[i + 1] / 255
-        const b = data[i + 2] / 255
+        const r = (data[i] ?? 0) / 255
+        const g = (data[i + 1] ?? 0) / 255
+        const b = (data[i + 2] ?? 0) / 255
         const R = r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4)
         const G = g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4)
         const B = b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4)

@@ -1,17 +1,14 @@
 /**
- * Pinned, scrub-driven scroll experience for §6 Features.
+ * Pinned, scrub-driven scroll experience for §6 Features. Runs at every
+ * viewport width, touch included; vertical scroll drives the step change.
  *
  *   const { activeIndex, enabled } = useFeaturesScroll(sectionRef, pinRef, {
  *     steps: 5,
  *     scrub: 0.5,
  *   })
  *
- * Bails out (enabled.value stays false) on:
- *   - prefers-reduced-motion: reduce
- *   - touch devices: (hover: none) and (pointer: coarse)
- *
- * In bail-out mode, callers fall back to the stack layout. activeIndex stays
- * at 0 — the stack layout shows all features simultaneously, so it is unused.
+ * Bails out (enabled.value stays false) only on prefers-reduced-motion:
+ * the CSS fallback then shows all steps stacked and activeIndex is unused.
  *
  * Pin distance = steps × 100vh, computed dynamically so resizes work.
  */
@@ -41,11 +38,7 @@ export function useFeaturesScroll(
     if (!sectionRef.value || !pinRef.value) return
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const touch = window.matchMedia('(hover: none) and (pointer: coarse)').matches
-    // Narrow viewports use the stacked vertical layout (CSS), so the pin
-    // must not engage — a 100dvh pin there clips the taller stacked content.
-    const narrow = window.matchMedia('(max-width: 1023px)').matches
-    if (reduced || touch || narrow) return
+    if (reduced) return
 
     const [{ gsap }, { ScrollTrigger }] = await Promise.all([
       import('gsap'),

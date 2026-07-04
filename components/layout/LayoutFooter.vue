@@ -62,7 +62,7 @@ const legalLinks = [
 ]
 const helpLinks = [
   { label: 'Contact', to: '/contact' },
-  { label: 'Press', href: 'mailto:contact@synqtogether.com' },
+  { label: 'Press', href: 'mailto:contact@michi.quest' },
 ]
 </script>
 
@@ -72,8 +72,8 @@ const helpLinks = [
       <div class="layout-footer__brand">
         <span class="layout-footer__wordmark type-display-md">Michi</span>
         <span class="layout-footer__tagline type-body">More life outside.</span>
-        <a class="layout-footer__support type-body" href="mailto:contact@synqtogether.com">
-          contact@synqtogether.com
+        <a class="layout-footer__support type-body" href="mailto:contact@michi.quest">
+          contact@michi.quest
         </a>
       </div>
 
@@ -112,16 +112,23 @@ const helpLinks = [
     <UiHairline class="layout-footer__rule" />
 
     <div class="container-shell layout-footer__base">
-      <span class="type-caption">© {{ year }} SYNQ. ALL RIGHTS RESERVED.</span>
+      <span class="type-caption">© {{ year }} MICHI. ALL RIGHTS RESERVED.</span>
       <div class="layout-footer__social" aria-label="Social">
-        <a href="https://instagram.com/synq" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <a
+          href="https://www.instagram.com/michi.quest/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Michi on Instagram"
+        >
           <Instagram :size="18" :stroke-width="1.5" />
         </a>
-        <a href="https://linkedin.com/company/synq" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <a
+          href="https://www.linkedin.com/company/111004970/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Michi on LinkedIn"
+        >
           <Linkedin :size="18" :stroke-width="1.5" />
-        </a>
-        <a href="https://tiktok.com/@synq" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-          <span class="layout-footer__tt" aria-hidden="true">TT</span>
         </a>
       </div>
     </div>
@@ -248,11 +255,5 @@ const helpLinks = [
 }
 .layout-footer__social a:hover {
   color: var(--brand);
-}
-.layout-footer__tt {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
 }
 </style>

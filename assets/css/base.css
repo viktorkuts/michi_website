@@ -18,6 +18,7 @@
   --color-brand:         var(--brand);
   --color-brand-hover:   var(--brand-hover);
   --color-brand-soft:    var(--brand-soft);
+  --color-brand-ink:     var(--brand-ink);
 
   --color-rule:          var(--rule);
 
@@ -163,6 +164,18 @@ hr {
   }
 }
 
+/* Intro hands off into How-it-works — the two sections argue one case
+   (problem → answer), so the seam between them stays shorter than the
+   default section gap. */
+.section-shell#intro {
+  padding-block: var(--space-24) var(--space-16);
+}
+@media (min-width: 1024px) {
+  .section-shell#intro {
+    padding-block: var(--space-32) var(--space-24);
+  }
+}
+
 /* Gallery sits tighter — clay surface change is the punctuation, the
    padding doesn't need to also shout. */
 .section-shell#gallery {
@@ -174,20 +187,14 @@ hr {
   }
 }
 
-/* About is the long breath — extra top padding before founder. */
-@media (min-width: 1024px) {
-  .section-shell#about {
-    padding-top: calc(var(--section-pad-y-desktop) + var(--space-16));
-  }
-}
-
-/* FAQ closes tighter so the footer doesn't feel marooned. */
+/* FAQ closes tighter so the footer doesn't feel marooned, and opens
+   tighter too — About's own bottom padding already provides the gap. */
 .section-shell#faq {
-  padding-block: var(--space-24) var(--space-16);
+  padding-block: var(--space-12) var(--space-16);
 }
 @media (min-width: 1024px) {
   .section-shell#faq {
-    padding-block: var(--space-32) var(--space-24);
+    padding-block: var(--space-16) var(--space-24);
   }
 }
 

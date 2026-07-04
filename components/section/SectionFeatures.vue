@@ -7,33 +7,7 @@ interface Feature {
   headline: string
   body: string
 }
-/*
-const features: Feature[] = [
-  {
-    number: '01',
-    eyebrow: 'OPEN',
-    headline: 'See who\'s doing what, within walking distance.',
-    body: 'No feed. No algorithm. A list. A time. A place. The app fills up after 5pm and empties out around midnight.',
-  },
-  {
-    number: '02',
-    eyebrow: 'POST',
-    headline: 'Drop a plan in under ten seconds.',
-    body: 'Pick the spot. Set the hour. Three words for what it is. Anyone close by who wants in, taps in.',
-  },
-  {
-    number: '03',
-    eyebrow: 'GO',
-    headline: 'The chat lives as long as the plan does.',
-    body: 'Threads are scoped to the night. They go quiet when it\'s over. Nothing to mute, nothing to leave.',
-  },
-  {
-    number: '04',
-    eyebrow: 'SHOW UP',
-    headline: 'Real names. Real faces. Verified numbers.',
-    body: 'A few photos. A few things you\'re into. A phone number we actually checked. Profiles, not personas.',
-  },
-]*/
+
 const features: Feature[] = [
   {
     number: '01',
@@ -57,13 +31,11 @@ const features: Feature[] = [
     number: '04',
     eyebrow: 'SHOW UP',
     headline: 'You know who you\'re meeting before you go.',
-    body: 'Verified phone number. Real name. A few photos. The people on Michi are accountable — and you are too.',
+    body: 'Verified phone number. Real name. A few photos. The people on Michi are accountable, and you are too.',
   },
 ]
 
 const phoneScreens = features.map((f, i) => ({
-  eyebrow: `${f.number} — ${f.eyebrow}`,
-  headline: f.headline,
   image: `/features/screen-${i + 1}.png`,
 }))
 
@@ -166,7 +138,7 @@ function phaseClass(i: number) {
       </div>
     </header>
 
-    <!-- Skip link — visible only on focus, exits straight to the gallery -->
+    <!-- Skip link — visible only on focus, exits straight to the Gallery -->
     <a class="features-skip skip-link" href="#gallery">Skip how-it-works section</a>
 
     <!-- Pin path — shown on (hover: hover) and (pointer: fine) without reduced-motion -->
@@ -238,6 +210,8 @@ function phaseClass(i: number) {
  * ---------------------------------------------------------------- */
 .how-it-works {
   background: var(--bg-primary);
+  position: relative;
+  z-index: 1; 
 }
 
 .how-it-works__intro {
@@ -463,6 +437,11 @@ function phaseClass(i: number) {
   }
   .feature-block__b {
     font-size: calc(var(--type-body-size) - 5px);
+  }
+}
+@media (max-width: 1023px) {
+  .how-it-works {
+    padding-bottom: 12vh;
   }
 }
 

@@ -172,7 +172,7 @@ function scrollTop() {
   color: var(--ink-primary);
 }
 .legal-page__toc-item.is-active a::before {
-  background: var(--brand);
+  background: var(--brand-ink);
 }
 
 .legal-body {
@@ -288,8 +288,8 @@ function scrollTop() {
   transition: text-decoration-color 200ms ease, color 200ms ease;
 }
 .legal-body :deep(a:hover) {
-  text-decoration-color: var(--brand);
-  color: var(--brand);
+  text-decoration-color: var(--brand-ink);
+  color: var(--brand-ink);
 }
 
 .legal-body :deep(hr) {

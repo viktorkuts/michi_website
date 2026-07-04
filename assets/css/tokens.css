@@ -1,4 +1,4 @@
-/*  Synq design tokens — locked per DESIGN_BRIEF.md
+/*  Michi design tokens — locked per DESIGN.md
  *  Edit only via brief revision; never hardcode in components.
  */
 
@@ -18,13 +18,14 @@
   --ink-on-clay:   #F7F1E6;   /* ivory text on clay surface       */
   --ink-muted-on-clay: rgb(247 241 230 / 0.55);
 
-  /* Persimmon — marketing accent. The product purple stays inside  */
-  /* the app; here the brand reads warm and present.                */
-  --brand:         #00F0FF;
-  --brand-hover:   #A23615;
-  --brand-soft:    #FBE7DF;
-  --brand-ring:    rgb(192 65 28 / 0.30);
-  --brand-ink:     #5C1F0C;   /* deep persimmon, for text on soft */
+  /* Accent family — drawn from the app's own UI (cyan fills carry   */
+  /* ink text, as on the app's Join button). --brand is a FILL color; */
+  /* accent text on ivory always uses --brand-ink (deep teal).        */
+  --brand:         #5AD8E6;
+  --brand-hover:   #3CCBDC;
+  --brand-soft:    #DFF4F7;
+  --brand-ring:    rgb(14 115 134 / 0.30);
+  --brand-ink:     #0E7386;   /* accent text on ivory — 5.5:1 */
 
   --rule:          #E8E2D5;   /* hairline borders                 */
   --rule-on-clay:  rgb(247 241 230 / 0.12);
@@ -43,13 +44,6 @@
   --type-display-lg-line:    1.05;
   --type-display-lg-track:   -0.02em;
   --type-display-lg-weight:  600;
-
-  /* Monumental — used only for the three Intro stat values.    */
-  /* Caps high on purpose so the numbers carry the page.        */
-  --type-stat-size:          clamp(4.5rem, 3rem + 9vw, 13rem);
-  --type-stat-line:          0.92;
-  --type-stat-track:         -0.045em;
-  --type-stat-weight:        600;
 
   --type-display-md-size:    clamp(2rem, 1.25rem + 2.5vw, 3.5rem);
   --type-display-md-line:    1.10;

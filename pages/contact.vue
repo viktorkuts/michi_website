@@ -15,7 +15,7 @@ const errors = ref<{ name?: string; email?: string; message?: string }>({})
 
 const mailtoFallback = computed(() => {
   const body = `${message.value}\n\n— ${name.value}`
-  return `mailto:contact@synqtogether.com?subject=${encodeURIComponent(`Contact from ${name.value}`)}&body=${encodeURIComponent(body)}`
+  return `mailto:contact@michi.quest?subject=${encodeURIComponent(`Contact from ${name.value}`)}&body=${encodeURIComponent(body)}`
 })
 
 function validate(): boolean {
@@ -46,8 +46,8 @@ async function onSubmit() {
         <UiSectionEyebrow>CONTACT</UiSectionEyebrow>
         <h1 class="type-display-md contact__h">Tell us what's up.</h1>
         <p class="type-body-lg contact__b">
-          Press, partnerships, support, or anything else — write us a line.
-          We read everything.
+          Press, partnerships, support, or anything else. Write us a
+          line; we read everything.
         </p>
       </header>
 
@@ -99,7 +99,7 @@ async function onSubmit() {
         </UiButton>
 
         <p class="type-caption contact__fallback">
-          OR EMAIL <a :href="mailtoFallback">SUPPORT@SYNQ.APP</a>
+          OR EMAIL <a :href="mailtoFallback">CONTACT@MICHI.QUEST</a>
         </p>
       </form>
 
@@ -160,7 +160,7 @@ async function onSubmit() {
 .contact__err {
   font-family: var(--font-mono);
   font-size: var(--type-caption-size);
-  color: var(--brand);
+  color: var(--brand-ink);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -175,7 +175,7 @@ async function onSubmit() {
   transition: border-color 200ms ease;
 }
 .contact__fallback a:hover {
-  border-bottom-color: var(--brand);
+  border-bottom-color: var(--brand-ink);
 }
 
 .contact__sent {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onBeforeUnmount } from 'vue'
+import { ref } from 'vue'
 
 interface Feature {
   number: string
@@ -11,34 +11,37 @@ interface Feature {
 const features: Feature[] = [
   {
     number: '01',
-    eyebrow: 'OPEN',
-    headline: 'See what\'s on tonight, within walking distance.',
-    body: 'Its not a feed, its a window. What\'s happening near you in the next few hours, posted by people who actually showed up.',
+    eyebrow: 'DISCOVER',
+    headline: 'See what\'s on tonight, near you.',
+    body: 'Plans nearby, posted by people who\'ll actually be there. Open one and you see the place, the time, the host, and who else is going. Tap join.',
   },
   {
     number: '02',
-    eyebrow: 'POST',
-    headline: 'Got something going? Invite the neighborhood.',
-    body: 'Name the spot. Pick the time. Say what it is. Anyone close by who feels like joining will see it.',
+    eyebrow: 'HOST',
+    headline: 'Got something going? Put it up in a minute.',
+    body: 'A place, a time, one line about what it is. That\'s the whole form. People nearby can ask to join, and you decide who\'s in.',
   },
   {
     number: '03',
-    eyebrow: 'GO',
-    headline: 'A chat that knows when the night is over.',
-    body: 'Every plan gets its own thread. It lives for the evening and disappears when it\'s done. Nothing to manage after.',
+    eyebrow: 'COORDINATE',
+    headline: 'Sort the details in the plan\'s own chat.',
+    body: 'Who\'s bringing the ball, when to head over. Every event gets its own chat, and it sticks around after: the chat becomes the club, and the next hangout links straight to it.',
   },
   {
     number: '04',
     eyebrow: 'SHOW UP',
-    headline: 'You know who you\'re meeting before you go.',
-    body: 'Verified phone number. Real name. A few photos. The people on Michi are accountable, and you are too.',
+    headline: 'Show up and meet them for real.',
+    body: 'You knew the plan, they knew the plan, and now you\'re all outside doing the thing. The app stays in your pocket.',
   },
 ]
 
-const phoneScreens = features.map((f, i) => ({
-  image: `/features/screen-${i + 1}.png`,
+const phoneScreens = features.map((_, i) => ({
+  image: `/features/screen-${i + 1}.webp`,
 }))
 
+// Pinned scroller runs at every width and on touch; vertical scroll is
+// the only gesture. Reduced-motion is the single bail-out (CSS then
+// stacks all steps).
 const sectionRef = ref<HTMLElement | null>(null)
 const pinRef = ref<HTMLElement | null>(null)
 
@@ -47,90 +50,26 @@ const { activeIndex } = useFeaturesScroll(sectionRef, pinRef, {
   scrub: 0.5,
 })
 
-// Track viewport orientation for the dots + phone sizing
-const isNarrow = ref(false)
-function syncNarrow() {
-  if (import.meta.server) return
-  isNarrow.value = window.matchMedia('(max-width: 1023px)').matches
-}
-onMounted(() => {
-  syncNarrow()
-  window.addEventListener('resize', syncNarrow, { passive: true })
-})
-onBeforeUnmount(() => {
-  if (import.meta.client) window.removeEventListener('resize', syncNarrow)
-})
-
-// Phone width derived from viewport height (aspect-ratio is 320/660 ≈ 0.485).
-// Caps at 320px on desktop / 240px on mobile so it never overshoots.
-// On short laptops the phone scales down to fit; on tall monitors it stays
-// at the cap. Ratio: phone-height = 0.78 dvh, so width = 0.78dvh × 0.485.
-const phoneWidth = computed(() => {
-  return isNarrow.value
-    ? 'min(240px, calc(58dvh * 320 / 660))'
-    : 'min(320px, calc(78dvh * 320 / 660))'
-})
-
-// ----------------------------------------------------------------
-//  80ms-gap state machine for the copy column
-//
-//   On activeIndex change:
-//     1. Mark previous index as 'outgoing' immediately (350ms exit).
-//     2. After 350ms + 80ms = 430ms, mark new index as 'active' (400ms enter).
-//
-//   No two blocks ever carry 'active' simultaneously.
-// ----------------------------------------------------------------
-type Phase = 'idle' | 'active' | 'outgoing'
-const phase = ref<Phase[]>(features.map((_, i) => (i === 0 ? 'active' : 'idle')))
-let gapTimer: number | null = null
-
-watch(activeIndex, (next, prev) => {
-  if (next === prev) return
-  if (gapTimer) {
-    window.clearTimeout(gapTimer)
-    gapTimer = null
-  }
-  // Phase 1: outgoing exits (350ms via CSS)
-  const out = features.map<Phase>((_, i) => (i === prev ? 'outgoing' : 'idle'))
-  phase.value = out
-  // Phase 2: 350ms exit + 80ms gap = 430ms, then incoming becomes active
-  gapTimer = window.setTimeout(() => {
-    phase.value = features.map<Phase>((_, i) => (i === next ? 'active' : 'idle'))
-    gapTimer = null
-  }, 430)
-})
-
-onBeforeUnmount(() => {
-  if (gapTimer) window.clearTimeout(gapTimer)
-})
-
-function phaseClass(i: number) {
-  const p = phase.value[i]
-  return {
-    'is-active': p === 'active',
-    'is-outgoing': p === 'outgoing',
-  }
-}
+// Phone width derives from viewport height so the pin always fits:
+// desktop gives the phone the full column; mobile leaves room for the
+// copy block below it inside the same 100dvh.
+const phoneWidthDesktop = 'min(320px, calc(78dvh * 320 / 660))'
+const phoneWidthMobile = 'min(190px, calc(40dvh * 320 / 660), 52vw)'
 </script>
 
 <template>
   <!-- Wrapper carries the nav anchor so the IntersectionObserver keeps
-       "How it works" active across the entire pinned scroll, not just
-       while the small intro header is visible. -->
+       "How it works" active across the entire pinned scroll. -->
   <div id="how-it-works" class="how-it-works">
-    <!-- Intro band — deliberately tight padding (no UiSectionShell) so the
-         title flows directly into the pin instead of floating in its own
-         dead-air bubble. Top breathing room separates it from §5; the
-         hairline + cue line lead the eye down into the pin. -->
     <header class="how-it-works__intro container-shell">
       <UiSectionEyebrow dot>HOW IT WORKS</UiSectionEyebrow>
       <h2 class="type-display-md how-it-works__h">
-        Four things.
-        <span class="type-italic" style="color: var(--brand);">No feed.</span>
+        Four steps.
+        <span class="type-italic how-it-works__h-em">No feed.</span>
       </h2>
       <p class="type-body-lg how-it-works__lead">
-        From opening the app to walking out the door. Four taps, ten
-        seconds each. Then you put the phone away.
+        Everything in the app exists to get you from opening it to
+        being somewhere. Here's the whole loop.
       </p>
       <div class="how-it-works__cue" aria-hidden="true">
         <span class="how-it-works__cue-rule"></span>
@@ -141,7 +80,6 @@ function phaseClass(i: number) {
     <!-- Skip link — visible only on focus, exits straight to the Gallery -->
     <a class="features-skip skip-link" href="#gallery">Skip how-it-works section</a>
 
-    <!-- Pin path — shown on (hover: hover) and (pointer: fine) without reduced-motion -->
     <section
       ref="sectionRef"
       class="features-pin-host"
@@ -149,10 +87,8 @@ function phaseClass(i: number) {
     >
       <div ref="pinRef" class="features-pin">
         <div class="features-pin__inner container-shell">
-
-          <!-- Vertical 5-dot progress (desktop) -->
+          <!-- Vertical dots (desktop only) -->
           <UiFeatureProgress
-            v-if="!isNarrow"
             :total="features.length"
             :active="activeIndex"
             orientation="vertical"
@@ -160,76 +96,91 @@ function phaseClass(i: number) {
             class="features-pin__dots features-pin__dots--vertical"
           />
 
-          <!-- Phone column -->
           <div class="features-pin__phone">
             <UiPhoneFrame
               :screens="phoneScreens"
               :active-index="activeIndex"
-              :width="phoneWidth"
+              :width="phoneWidthDesktop"
               aria-label="Michi app preview"
+              class="features-pin__phone-frame features-pin__phone-frame--desktop"
+            />
+            <UiPhoneFrame
+              :screens="phoneScreens"
+              :active-index="activeIndex"
+              :width="phoneWidthMobile"
+              aria-label="Michi app preview"
+              class="features-pin__phone-frame features-pin__phone-frame--mobile"
             />
           </div>
 
-          <!-- Horizontal dots (mobile, below phone) -->
-          <UiFeatureProgress
-            v-if="isNarrow"
-            :total="features.length"
-            :active="activeIndex"
-            orientation="horizontal"
-            class="features-pin__dots features-pin__dots--horizontal"
-          />
-
-          <!-- Copy column — 5 stacked blocks, only the active one visible -->
+          <!-- Copy column — stacked blocks, direct crossfade on the
+               active index. No timers: fast scrubbing can never strand
+               the column empty. -->
           <div class="features-pin__copy" aria-live="polite">
             <article
               v-for="(f, i) in features"
               :key="i"
               class="feature-block"
-              :class="phaseClass(i)"
-              :inert="phase[i] !== 'active' || undefined"
-              :aria-hidden="phase[i] !== 'active' ? 'true' : undefined"
+              :class="{ 'is-active': i === activeIndex }"
+              :inert="i !== activeIndex || undefined"
+              :aria-hidden="i !== activeIndex ? 'true' : undefined"
             >
-              <UiSectionEyebrow>{{ f.number }} — {{ f.eyebrow }}</UiSectionEyebrow>
+              <UiSectionEyebrow>{{ f.number }} · {{ f.eyebrow }}</UiSectionEyebrow>
               <h3 class="type-display-sm feature-block__h">{{ f.headline }}</h3>
               <p class="type-body feature-block__b">{{ f.body }}</p>
             </article>
           </div>
 
+          <!-- Horizontal dots (mobile only, below the copy) -->
+          <UiFeatureProgress
+            :total="features.length"
+            :active="activeIndex"
+            orientation="horizontal"
+            aria-label="Step progress"
+            class="features-pin__dots features-pin__dots--horizontal"
+          />
         </div>
       </div>
     </section>
   </div>
-
 </template>
 
 <style scoped>
-/* ----------------------------------------------------------------
- *  Intro band — replaces UiSectionShell so the title isn't trapped
- *  in 192px of dead air. Top breathing room separates it from §5;
- *  tight bottom padding hands off cleanly to the pin.
- * ---------------------------------------------------------------- */
 .how-it-works {
   background: var(--bg-primary);
   position: relative;
-  z-index: 1; 
+  z-index: 1;
 }
 
+/* The shared .skip-link hides via translateY(-200%), which only works
+   for viewport-fixed elements. This one is absolutely positioned inside
+   the section, so clip it until keyboard focus instead. */
+.features-skip {
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.features-skip:focus-visible {
+  clip-path: none;
+  transform: translateY(0);
+}
+
+/* ----------------------------------------------------------------
+ *  Intro band — tight bottom padding hands off into the pin.
+ * ---------------------------------------------------------------- */
 .how-it-works__intro {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  padding-top: var(--space-24);
-  padding-bottom: var(--space-12);
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-6);
   max-width: 42rem;
-  /* container-shell utility (from base.css) handles inline padding +
-     centering, but its max-width is too wide here — narrow the intro
-     and keep the section-shell's horizontal alignment. */
+  margin-inline: 0 auto;
 }
 
 @media (min-width: 1024px) {
   .how-it-works__intro {
-    padding-top: var(--space-32);
-    padding-bottom: var(--space-16);
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-8);
     gap: var(--space-4);
   }
 }
@@ -237,6 +188,9 @@ function phaseClass(i: number) {
 .how-it-works__h {
   margin: 0;
   text-wrap: balance;
+}
+.how-it-works__h-em {
+  color: var(--brand-ink);
 }
 
 .how-it-works__lead {
@@ -274,12 +228,8 @@ function phaseClass(i: number) {
 }
 
 /* ----------------------------------------------------------------
- *  Pin host
- *  Outer container that ScrollTrigger pins. When the pin runs, the
- *  child .features-pin is held in place. pinSpacing: true reserves
- *  500vh of phantom flow so §7 below gets correct natural spacing.
- *  CSS toggles between pin and stack via media queries — JS only
- *  conditionally engages GSAP. SSR markup matches client.
+ *  Pin — one 100dvh viewport at every width. Desktop: phone left,
+ *  copy right. Mobile: phone top, copy below, dots under the copy.
  * ---------------------------------------------------------------- */
 .features-pin-host {
   position: relative;
@@ -297,37 +247,156 @@ function phaseClass(i: number) {
 .features-pin__inner {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(280px, 38%) 1fr;
-  align-items: center;
-  gap: var(--space-12);
   width: 100%;
   height: 100%;
-  padding-block: var(--space-8);
-  /* nudge the pinned phone + copy lower in the viewport */
-  transform: translateY(20px);
+  /* Mobile: phone / copy / dots stacked. The copy row is fixed-height
+     so the phone never jumps when text length changes. Bottom padding
+     clears the floating tab bar. */
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  justify-items: center;
+  align-items: center;
+  row-gap: var(--space-4);
+  padding-block: var(--space-6) var(--space-24);
+}
+
+@media (min-width: 1024px) {
+  .features-pin__inner {
+    grid-template-columns: minmax(280px, 38%) 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    justify-items: stretch;
+    column-gap: var(--space-12);
+    row-gap: 0;
+    padding-block: var(--space-8);
+  }
+}
+
+/* Phone column */
+.features-pin__phone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+.features-pin__phone-frame--desktop {
+  display: none;
+}
+.features-pin__phone-frame--mobile {
+  display: block;
+}
+@media (min-width: 1024px) {
+  .features-pin__phone-frame--desktop {
+    display: block;
+  }
+  .features-pin__phone-frame--mobile {
+    display: none;
+  }
+}
+
+/* Dots */
+.features-pin__dots--vertical {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .features-pin__dots--vertical {
+    display: flex;
+    position: absolute;
+    left: var(--space-6);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+.features-pin__dots--horizontal {
+  display: flex;
+}
+@media (min-width: 1024px) {
+  .features-pin__dots--horizontal {
+    display: none;
+  }
+}
+
+/* Copy — stacked blocks crossfade in place */
+.features-pin__copy {
+  position: relative;
+  width: 100%;
+  max-width: 26rem;
+  height: 12rem;
+}
+@media (min-width: 1024px) {
+  .features-pin__copy {
+    max-width: none;
+    height: 100%;
+    min-height: 320px;
+  }
+}
+
+.feature-block {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--space-3);
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 250ms var(--ease-out-quart),
+    transform 250ms var(--ease-out-quart);
+  pointer-events: none;
+}
+@media (min-width: 1024px) {
+  .feature-block {
+    justify-content: center;
+  }
+}
+.feature-block.is-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 400ms var(--ease-out-expo) 80ms,
+    transform 400ms var(--ease-out-expo) 80ms;
+  pointer-events: auto;
+}
+
+.feature-block__h {
+  margin: 0;
+  text-wrap: balance;
+  max-width: 22ch;
+}
+.feature-block__b {
+  margin: 0;
+  max-width: 36rem;
+  color: var(--ink-secondary);
+}
+@media (max-width: 1023px) {
+  .feature-block__b {
+    font-size: 0.9375rem;
+  }
 }
 
 /* ----------------------------------------------------------------
- *  Narrow viewports — the scroll-pin never engages (see
- *  useFeaturesScroll), so the section flows vertically: phone on top,
- *  then all four steps stacked. Without this the 100dvh pin clips the
- *  taller stacked content (phone reads cut off at the top) and only the
- *  first step's copy is ever revealed.
+ *  Reduced motion (any width): the pin never engages, so flow
+ *  naturally and show every step at once.
  * ---------------------------------------------------------------- */
-@media (max-width: 1023px) {
+@media (prefers-reduced-motion: reduce) {
   .features-pin {
     height: auto;
-    display: block;
-    overflow: visible;
   }
   .features-pin__inner {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    align-content: start;
+    grid-template-rows: none;
+    justify-items: start;
+    row-gap: var(--space-8);
+    padding-block: var(--space-8) var(--space-16);
+  }
+  .features-pin__phone {
+    width: 100%;
+    justify-content: center;
+  }
+  .features-pin__copy {
     height: auto;
-    padding-block: var(--space-12);
-    gap: var(--space-8);
-    transform: none;
+    max-width: none;
+    min-height: 0;
   }
   .feature-block {
     position: relative;
@@ -346,143 +415,4 @@ function phaseClass(i: number) {
     display: none;
   }
 }
-
-/* Phone column */
-.features-pin__phone {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-@media (max-width: 1023px) {
-  .features-pin__phone {
-    justify-content: center;
-    /* lower the phone (and the copy below it) in the mobile stack */
-    margin-top: 40px;
-  }
-}
-
-/* Vertical dots — sit between left edge and phone */
-.features-pin__dots--vertical {
-  position: absolute;
-  left: var(--space-6);
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-/* Horizontal dots — directly below the phone on mobile */
-.features-pin__dots--horizontal {
-  grid-row: 2;
-  justify-self: center;
-}
-
-/* Copy column — 5 absolutely-stacked blocks */
-.features-pin__copy {
-  position: relative;
-  height: 100%;
-  min-height: 320px;
-}
-@media (max-width: 1023px) {
-  .features-pin__copy {
-    height: auto;
-    min-height: 0;
-    margin-top: 15px;
-  }
-}
-
-.feature-block {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: var(--space-3);
-  opacity: 0;
-  transform: translateY(16px);
-  /* idle state — no transition so blocks reset instantly between phases */
-  pointer-events: none;
-}
-.feature-block.is-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition:
-    opacity 400ms var(--ease-out-expo),
-    transform 400ms var(--ease-out-expo);
-  pointer-events: auto;
-}
-.feature-block.is-outgoing {
-  opacity: 0;
-  transform: translateY(-16px);
-  transition:
-    opacity 350ms var(--ease-out-expo),
-    transform 350ms var(--ease-out-expo);
-  pointer-events: none;
-}
-
-.feature-block__h {
-  margin: 0;
-  text-wrap: balance;
-  font-size: calc(var(--type-display-sm-size) - 5px);
-}
-.feature-block__b {
-  margin: 0;
-  max-width: 36rem;
-  color: var(--ink-secondary);
-}
-
-/* Mobile: feature copy 5px smaller than its current size (headline is
-   already -5px above, so -10px total here) + nudged 15px lower. */
-@media (max-width: 1023px) {
-  .feature-block__h {
-    font-size: calc(var(--type-display-sm-size) - 10px);
-  }
-  .feature-block__b {
-    font-size: calc(var(--type-body-size) - 5px);
-  }
-}
-@media (max-width: 1023px) {
-  .how-it-works {
-    padding-bottom: 12vh;
-  }
-}
-
-/* ----------------------------------------------------------------
- *  Reduced-motion fallback — pin doesn't engage, so let the layout
- *  flow naturally and reveal all five blocks at once.
- * ---------------------------------------------------------------- */
-@media (prefers-reduced-motion: reduce) {
-  .features-pin {
-    height: auto;
-  }
-  .features-pin__inner {
-    grid-template-columns: 1fr;
-    gap: var(--space-8);
-    padding-block: var(--space-16);
-    transform: none;
-  }
-  .features-pin__copy {
-    height: auto;
-    min-height: 0;
-  }
-  .feature-block {
-    position: relative;
-    inset: auto;
-    opacity: 1;
-    transform: none;
-    transition: none;
-    pointer-events: auto;
-    padding-block: var(--space-8);
-  }
-  .feature-block + .feature-block {
-    border-top: 1px solid var(--rule);
-  }
-  .features-pin__dots--vertical,
-  .features-pin__dots--horizontal {
-    display: none;
-  }
-}
-
-/* ----------------------------------------------------------------
- *  Skip link — inherits .skip-link styles from base.css
- *  (off-screen until focused, then anchors to top-left of viewport)
- * ---------------------------------------------------------------- */
 </style>

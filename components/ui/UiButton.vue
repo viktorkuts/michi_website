@@ -91,10 +91,10 @@ const isExternal = computed(() =>
   pointer-events: none;
 }
 
-/* Primary — brand fill, ivory text */
+/* Primary — brand fill, ink text (mirrors the app's Join button) */
 .ui-button--primary {
   background: var(--brand);
-  color: var(--bg-primary);
+  color: var(--ink-primary);
 }
 .ui-button--primary:hover {
   background: var(--brand-hover);

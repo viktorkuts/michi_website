@@ -77,6 +77,8 @@ export default defineNuxtConfig({
         '/contact',
         '/privacy',
         '/terms',
+        '/privacy-fr',
+        '/terms-fr',
         '/account-deletion',
       ],
       // Keep deploys green when a single content page errors mid-edit.

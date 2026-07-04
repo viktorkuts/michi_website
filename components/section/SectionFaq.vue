@@ -45,15 +45,11 @@ const activeQa = computed(() => {
   <UiSectionShell id="faq" bg="primary">
     <div class="section-faq">
 
-      <!-- Header -->
       <header class="section-faq__header">
-        <span class="section-faq__eyebrow">Before you ask</span>
-        <h2 class="section-faq__title">Frequently asked questions</h2>
-        <!-- decorative glow, same as the original -->
-        <span class="section-faq__glow" aria-hidden="true" />
+        <UiSectionEyebrow dot>FAQ</UiSectionEyebrow>
+        <h2 class="type-display-md section-faq__title">Before you ask.</h2>
       </header>
 
-      <!-- Pill tabs -->
       <div class="section-faq__tabs" role="tablist" aria-label="FAQ categories">
         <button
           v-for="(tab, i) in tabs"
@@ -64,30 +60,18 @@ const activeQa = computed(() => {
           :class="{ 'is-active': activeTab === i }"
           @click="activeTab = i"
         >
-          <span class="section-faq__tab-label">{{ tab }}</span>
-          <AnimatePresence>
-            <motion.span
-              v-if="activeTab === i"
-              :initial="{ y: '100%' }"
-              :animate="{ y: '0%' }"
-              :exit="{ y: '100%' }"
-              :transition="{ duration: 0.5, ease: 'backIn' }"
-              class="section-faq__tab-fill"
-              aria-hidden="true"
-            />
-          </AnimatePresence>
+          {{ tab }}
         </button>
       </div>
 
-      <!-- FAQ list -->
       <div class="section-faq__list">
         <AnimatePresence mode="wait">
           <motion.div
             :key="activeTab"
-            :initial="{ opacity: 0, y: 20 }"
+            :initial="{ opacity: 0, y: 12 }"
             :animate="{ opacity: 1, y: 0 }"
-            :exit="{ opacity: 0, y: 20 }"
-            :transition="{ duration: 0.5, ease: 'backIn' }"
+            :exit="{ opacity: 0, y: -8 }"
+            :transition="{ duration: 0.25, ease: 'easeOut' }"
             class="section-faq__items"
           >
             <UiFaqItem
@@ -107,126 +91,63 @@ const activeQa = computed(() => {
 
 <style scoped>
 .section-faq {
-  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-10);
+  gap: var(--space-8);
+  max-width: 48rem;
 }
 
-/* Header */
 .section-faq__header {
-  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: var(--space-3);
-  text-align: center;
-}
-
-.section-faq__eyebrow {
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  font-weight: 500;
-  background: linear-gradient(
-    to right,
-    var(--brand),
-    color-mix(in srgb, var(--brand) 55%, transparent)
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  margin-bottom: var(--space-2);
 }
 
 .section-faq__title {
-  font-family: var(--font-sans);
-  font-size: clamp(2rem, 1.4rem + 2.5vw, 3rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--ink-primary);
   margin: 0;
+  text-wrap: balance;
 }
 
-.section-faq__glow {
-  position: absolute;
-  top: -350px;
-  left: 50%;
-  translate: -50% 0;
-  /* Never exceed the container width — a fixed 600px overflows narrow
-     viewports and would force horizontal page scroll. */
-  width: min(600px, 100%);
-  height: 500px;
-  border-radius: 9999px;
-  background: radial-gradient(
-    ellipse at center,
-    color-mix(in srgb, var(--brand) 10%, transparent),
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Tabs */
+/* Tabs — system pills: hairline default, ink fill when active */
 .section-faq__tabs {
-  position: relative;
-  z-index: 1;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .section-faq__tab {
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
-  padding: 0.375rem 0.75rem;
+  padding: var(--space-2) var(--space-4);
   border: 1px solid var(--rule);
-  border-radius: 0.375rem;
+  border-radius: var(--radius-pill);
   font-family: var(--font-sans);
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--ink-muted);
+  color: var(--ink-secondary);
   background: transparent;
   cursor: pointer;
-  transition: color 300ms ease, border-color 300ms ease;
+  transition:
+    color var(--dur-micro) var(--ease-out-quart),
+    background-color var(--dur-micro) var(--ease-out-quart),
+    border-color var(--dur-micro) var(--ease-out-quart);
+  min-height: 40px;
 }
 .section-faq__tab:hover {
   color: var(--ink-primary);
+  border-color: var(--ink-muted);
 }
 .section-faq__tab.is-active {
   color: var(--bg-primary);
-  border-color: var(--brand);
+  background: var(--ink-primary);
+  border-color: var(--ink-primary);
 }
 
-.section-faq__tab-label {
-  position: relative;
-  z-index: 1;
-}
-
-.section-faq__tab-fill {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: linear-gradient(
-    to right,
-    var(--brand),
-    color-mix(in srgb, var(--brand) 80%, transparent)
-  );
-}
-
-/* List */
 .section-faq__list {
   width: 100%;
-  max-width: 48rem;
-  margin-top: var(--space-6);
 }
 
 .section-faq__items {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  border-bottom: 1px solid var(--rule);
 }
 </style>

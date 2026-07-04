@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { motion, AnimatePresence } from 'motion-v'
+import { motion } from 'motion-v'
 import { Plus } from 'lucide-vue-next'
 
 defineProps<{ question: string }>()
@@ -27,7 +27,7 @@ const isOpen = ref(false)
         class="faq-item__icon"
         aria-hidden="true"
       >
-        <Plus :size="20" />
+        <Plus :size="18" />
       </motion.span>
     </button>
 
@@ -35,9 +35,8 @@ const isOpen = ref(false)
       :initial="false"
       :animate="{
         height: isOpen ? 'auto' : '0px',
-        marginBottom: isOpen ? '16px' : '0px',
       }"
-      :transition="{ duration: 0.3, ease: 'easeInOut' }"
+      :transition="{ duration: 0.3, ease: 'easeOut' }"
       class="faq-item__body-wrap"
     >
       <p class="faq-item__body"><slot /></p>
@@ -46,14 +45,9 @@ const isOpen = ref(false)
 </template>
 
 <style scoped>
+/* Hairline list row — no card chrome */
 .faq-item {
-  border: 1px solid var(--rule);
-  border-radius: 0.75rem;
-  background: var(--bg-secondary);
-  transition: background 200ms ease;
-}
-.faq-item.is-open {
-  background: color-mix(in srgb, var(--bg-secondary) 60%, transparent);
+  border-top: 1px solid var(--rule);
 }
 
 .faq-item__head {
@@ -62,7 +56,7 @@ const isOpen = ref(false)
   justify-content: space-between;
   gap: var(--space-4);
   width: 100%;
-  padding: var(--space-4);
+  padding-block: var(--space-4);
   text-align: left;
   background: transparent;
   border: 0;
@@ -74,10 +68,6 @@ const isOpen = ref(false)
   font-size: 1.0625rem;
   font-weight: 500;
   line-height: 1.4;
-  color: var(--ink-muted);
-  transition: color 200ms ease;
-}
-.faq-item.is-open .faq-item__q {
   color: var(--ink-primary);
 }
 
@@ -93,7 +83,6 @@ const isOpen = ref(false)
 
 .faq-item__body-wrap {
   overflow: hidden;
-  padding-inline: var(--space-4);
 }
 
 .faq-item__body {
@@ -102,11 +91,11 @@ const isOpen = ref(false)
   line-height: 1.65;
   color: var(--ink-secondary);
   margin: 0;
+  max-width: 65ch;
+  padding-bottom: var(--space-4);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .faq-item,
-  .faq-item__q,
   .faq-item__icon { transition: none; }
 }
 </style>

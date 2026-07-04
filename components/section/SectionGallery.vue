@@ -26,7 +26,7 @@ function openLightbox(item: GalleryItem) {
   <UiSectionShell id="gallery" bg="clay">
     <div class="section-gallery">
       <header class="section-gallery__head">
-        <UiSectionEyebrow dot>THIS WEEK ON SYNQ</UiSectionEyebrow>
+        <UiSectionEyebrow dot>THIS WEEK ON MICHI</UiSectionEyebrow>
         <h2 class="section-gallery__headline type-display-md">
           Plans,
           <span class="type-italic" style="color: var(--brand);">not posts.</span>
@@ -131,7 +131,7 @@ function openLightbox(item: GalleryItem) {
 }
 .gallery-card:hover .gallery-card__going {
   background: var(--brand);
-  color: var(--bg-primary);
+  color: var(--ink-primary);
   border-color: var(--brand);
 }
 .gallery-card:active {
@@ -144,7 +144,7 @@ function openLightbox(item: GalleryItem) {
   overflow: hidden;
   border-radius: var(--radius-lg);
   border: 1px solid var(--rule-on-clay);
-  background: linear-gradient(135deg, #2A1B12, #FFFFFF);
+  background: color-mix(in srgb, var(--bg-clay) 80%, var(--ink-on-clay));
   transition: border-color 240ms var(--ease-out-expo);
 }
 .gallery-card__media :deep(img) {

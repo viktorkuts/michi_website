@@ -57,7 +57,7 @@ withDefaults(defineProps<Props>(), {
     transform 220ms var(--ease-out-expo);
 }
 .ui-feature-progress__dot.is-active {
-  background: var(--brand);
+  background: var(--brand-ink);
   opacity: 1;
   transform: scale(1.2);
 }

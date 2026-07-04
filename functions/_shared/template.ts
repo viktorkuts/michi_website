@@ -364,7 +364,8 @@ export const renderProfileShareHtml = (data: ProfileShareData): string => {
 export const renderInviteShareHtml = (data: InviteShareData): string => {
   const pageUrl = `${SITE_URL}/i/${data.token}`;
   const deeplink = `synq://invite/${data.token}`;
-  const active = data.status === "active";
+  const status = data.status;
+  const active = status === "active";
 
   const tombstoneCopy: Record<Exclude<InviteStatus, "active">, string> = {
     expired: "This invite link has expired.",
@@ -382,7 +383,7 @@ export const renderInviteShareHtml = (data: InviteShareData): string => {
   }
   bodyParts.push(`<div class="body">`);
   bodyParts.push(`<div class="kicker">Friend invite on Michi</div>`);
-  if (active) {
+  if (status === "active") {
     bodyParts.push(`<h1>${esc(data.ownerName)}</h1>`);
     bodyParts.push(`<div class="meta">wants to connect on Michi</div>`);
     // CTA targets the https self-URL (Universal/App Link handoff when
@@ -391,7 +392,7 @@ export const renderInviteShareHtml = (data: InviteShareData): string => {
   } else {
     bodyParts.push(`<h1>Invite unavailable</h1>`);
     bodyParts.push(
-      `<div class="meta">${esc(tombstoneCopy[data.status])}</div>`,
+      `<div class="meta">${esc(tombstoneCopy[status])}</div>`,
     );
   }
   bodyParts.push(

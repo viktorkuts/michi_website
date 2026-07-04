@@ -8,9 +8,9 @@ You can delete your Michi account at any time.
 
 ## In the app
 
-1. Open Michi.
+1. Open Michi and go to your profile.
 2. Settings → Account → Delete account.
-3. Confirm with your phone number.
+3. Confirm when prompted.
 
 Your account is deactivated immediately. Permanent deletion completes
 within 30 days.
@@ -18,9 +18,9 @@ within 30 days.
 ## By email
 
 If you can't access the app, email
-[contact@synqtogether.com](mailto:contact@synqtogether.com) from the address linked to
-your account, or include your phone number for verification. We'll
-confirm by reply within 7 days.
+[contact@michi.quest](mailto:contact@michi.quest) from the address linked
+to your Google or Apple sign-in so we can verify the account is yours.
+We'll confirm by reply within 7 days.
 
 ## What gets deleted
 

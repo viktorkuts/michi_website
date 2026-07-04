@@ -9,7 +9,7 @@ interface NuxtError {
 const props = defineProps<{ error: NuxtError }>()
 
 useHead({
-  title: `${props.error.statusCode} — Synq`,
+  title: `${props.error.statusCode} — Michi`,
 })
 
 function clearError() {
@@ -79,6 +79,6 @@ const isNotFound = computed(() => props.error.statusCode === 404)
   background: var(--rule);
 }
 .error-page__dots span:first-child {
-  background: var(--brand);
+  background: var(--brand-ink);
 }
 </style>

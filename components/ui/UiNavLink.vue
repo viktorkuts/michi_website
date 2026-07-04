@@ -83,7 +83,7 @@ function onHashClick(e: MouseEvent) {
   right: var(--space-3);
   bottom: 14px;
   height: 1px;
-  background: var(--brand);
+  background: var(--brand-ink);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 220ms var(--ease-out-expo);
@@ -99,7 +99,7 @@ function onHashClick(e: MouseEvent) {
   width: 4px;
   height: 4px;
   border-radius: 999px;
-  background: var(--brand);
+  background: var(--brand-ink);
   opacity: 0;
   transform: scale(0.6);
   transition:

@@ -10,10 +10,6 @@ don't use Michi.
 
 Your privacy is covered by our [Privacy Policy](Michi_Privacy_Policy.md).
 
-> *Draft for your team and your lawyer, not legal advice. Have a Quebec-licensed
-> lawyer review it before publishing, and publish a French version alongside it
-> (required for your Quebec users).*
-
 ## 1. Who can use Michi
 
 You must be **18 or older** to use Michi, and by using it you confirm that you are.

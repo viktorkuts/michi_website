@@ -6,8 +6,6 @@ Bienvenue sur Michi. Ces Conditions d'utilisation (« Conditions ») constituent
 
 Votre vie privée est couverte par notre [Politique de confidentialité](Michi_Privacy_Policy.md).
 
-> *Ébauche destinée à votre équipe et à votre avocat, et non à titre de conseil juridique. Faites-la réviser par un avocat québécois avant de la publier, et publiez une version française en parallèle (requise pour vos utilisateurs québécois).*
-
 ## 1. Qui peut utiliser Michi
 
 Vous devez avoir **18 ans ou plus** pour utiliser Michi, et en l'utilisant, vous confirmez que c'est le cas. Michi n'est pas destiné aux personnes de moins de 18 ans.

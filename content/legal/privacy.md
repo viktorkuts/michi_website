@@ -14,10 +14,6 @@ respecting the protection of personal information in the private sector* (Law 25
 and Canada's *Personal Information Protection and Electronic Documents Act*
 (PIPEDA).
 
-> *Draft for your team and your lawyer, not legal advice. Have a Quebec-licensed
-> lawyer review it before publishing, and publish a French version alongside it
-> (required for your Quebec users).*
-
 ## 1. Information we collect
 
 **Information you give us**
@@ -101,20 +97,13 @@ We share it only in these situations:
 
 ## 5. How long we keep it
 
-Michi keep personal information only as long as it needs it:
+Michi keeps personal information only as long as it needs it:
 
-- **Account and profile:** while your account is active. When you delete your
-  account, we delete or anonymize your personal information within **30 days**
-  (backups within **90 days**).
 - **Friend connections (auto-decay):** connections you don't interact with for
   about **12 months** drop off automatically.
-- **Chats and content:** kept while the chat or content exists; when you delete
-  content or your account, it's removed within 30 days (copies others saved or
-  re-shared in a shared chat may remain).
 - **Usage analytics:** up to **24 months**, then aggregated or anonymized.
-- **Diagnostics/crash logs:** up to **90 days**.
-- **Safety and legal records:** as long as needed for the purpose or as the law
-  requires.
+- **Personal data:** deleted when you delete your account, except for limited
+  records we're required to keep for legal or safety reasons.
 
 ## 6. How we protect it
 

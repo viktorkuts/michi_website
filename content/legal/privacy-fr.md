@@ -6,8 +6,6 @@ Michi (« Michi », « nous », « notre ») est une application sociale pour tr
 
 Michi est exploité par [nom de l'entité juridique], basé au Québec, Canada, et est destiné aux utilisateurs au Canada. Nous traitons les renseignements personnels conformément à la *Loi sur la protection des renseignements personnels dans le secteur privé* du Québec (Loi 25) et à la *Loi sur la protection des renseignements personnels et les documents électroniques* (LPRPDE) du Canada.
 
-> *Ébauche destinée à votre équipe et à votre avocat, et non à titre de conseil juridique. Faites-la réviser par un avocat québécois avant de la publier, et publiez une version française en parallèle (requise pour vos utilisateurs québécois).*
-
 ## 1. Renseignements que nous collectons
 
 **Renseignements que vous nous fournissez**
@@ -63,12 +61,9 @@ Nous **ne vendons pas vos renseignements personnels et ne les utilisons pas à d
 
 Michi conserve les renseignements personnels uniquement aussi longtemps qu'il en a besoin :
 
-- **Compte et profil :** pendant que votre compte est actif. Lorsque vous supprimez votre compte, nous supprimons ou anonymisons vos renseignements personnels dans les **30 jours** (sauvegardes dans les **90 jours**).
 - **Connexions d'amis (désactivation automatique) :** les connexions avec lesquelles vous n'interagissez pas pendant environ **12 mois** disparaissent automatiquement.
-- **Chats et contenu :** conservés tant que le chat ou le contenu existe ; lorsque vous supprimez du contenu ou votre compte, il est supprimé dans les 30 jours (les copies que d'autres ont sauvegardées ou repartagées dans un chat partagé peuvent rester).
 - **Analyses d'utilisation :** jusqu'à **24 mois**, puis agrégées ou anonymisées.
-- **Journaux de diagnostic et de plantage :** jusqu'à **90 jours**.
-- **Dossiers de sécurité et juridiques :** aussi longtemps que nécessaire à la fin visée ou que la loi l'exige.
+- **Données personnelles :** supprimées lors de la suppression de votre compte, à l'exception des dossiers limités que nous sommes tenus de conserver pour des raisons légales ou de sécurité.
 
 ## 6. Comment nous les protégeons
 

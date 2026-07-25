@@ -77,6 +77,7 @@ export default defineNuxtConfig({
         '/contact',
         '/privacy',
         '/terms',
+        '/child-safety',
         '/privacy-fr',
         '/terms-fr',
         '/account-deletion',

@@ -58,6 +58,7 @@ const legalLinks = [
   { label: 'Terms of Use', to: '/terms' },
   { label: 'Politique de confidentialité', to: '/privacy-fr' },
   { label: 'Conditions d\'utilisation', to: '/terms-fr' },
+  { label: 'Child Safety', to: '/child-safety' },
   { label: 'Account Deletion', to: '/account-deletion' },
 ]
 const helpLinks = [
